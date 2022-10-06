@@ -1,17 +1,34 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Admin from '../pages/Admin'
 import Index from '../pages/Index'
+import Training from '../pages/Training'
 import { AppProvider } from '../providers/AppProvider'
 import { RoutingProps } from '../types/config'
 
 const routes = [
   {
-    path: '/admin',
+    path: '/login',
     element: <Admin />
   },
   {
-    path: '/admin/works/:idWork',
+    path: '/admin/words',
     element: <Admin />
+  },
+  {
+    path: '/admin/word',
+    element: <Admin />
+  },
+  {
+    path: '/admin/words/:idWork',
+    element: <Admin />
+  },
+  {
+    path: '/words',
+    element: <Admin />
+  },
+  {
+    path: '/training',
+    element: <Training />
   },
   {
     path: '*',

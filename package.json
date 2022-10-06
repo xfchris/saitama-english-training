@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "env-cmd -e Local vite",
+    "dev": "env-cmd -e Local vite --host",
     "build": "tsc && env-cmd -e Dev vite build",
     "test": "env-cmd -e Test vitest",
     "coverage": "env-cmd -e Test vitest run --coverage",
@@ -20,6 +20,7 @@
     "lodash.clonedeep": "^4.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.0",
     "react-i18next": "^11.18.6",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.1",
