@@ -24,7 +24,9 @@
     "addWord": "Añadir frase",
     "editWord": "Editar frase",
     "englishWord": "Oración en ingles",
-    "spanishWord": "Oración en español"
+    "spanishWord": "Oración en español",
+    "english": "Ingles",
+    "spanish": "Español"
   },
   "button": {
     "login": "Iniciar sesión",
