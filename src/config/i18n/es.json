@@ -26,7 +26,8 @@
     "englishWord": "Oración en ingles",
     "spanishWord": "Oración en español",
     "english": "Ingles",
-    "spanish": "Español"
+    "spanish": "Español",
+    "wordsManage": "Gestión de oraciones"
   },
   "button": {
     "login": "Iniciar sesión",

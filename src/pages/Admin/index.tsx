@@ -9,7 +9,7 @@ export default function Admin() {
   return (
     <Layout with100={false}>
       <Container>
-        <TitleH1 title="Gestión de palabras" />
+        <TitleH1 title={trans('label.wordsManage')} />
         <Row className="my-4">
           <Col sm={8}>
             <Card className="rounded-0 mb-3">

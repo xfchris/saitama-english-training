@@ -13,7 +13,9 @@ const fakeData = [
   }
 ]
 for (let i = 0; i < 100; i++) {
-  fakeData.push(fakeData[0])
+  const newData = { ...fakeData[0] }
+  newData.id = i + 2
+  fakeData.push(newData)
 }
 
 export function WordsDataTable() {
