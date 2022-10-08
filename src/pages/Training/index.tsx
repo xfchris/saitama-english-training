@@ -1,49 +1,64 @@
-import { Badge, Button, Progress } from 'reactstrap'
-import { SoundWaveIcon } from '../../components/Icons'
+import React from 'react'
+import { Container, Table } from 'reactstrap'
+import TitleH1 from '../../components/TitleH1'
+import { trans } from '../../config/i18n'
 import Layout from '../../layouts/Layout'
-import { talkText } from '../../utils/helpers'
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
 
-export default function Training() {
-  const readCurrentText = () => {
-    talkText('The bank is on the corner of Pine Street and First Street.')
-    console.log('leyendo texto')
-  }
-
+export default function StartIn() {
   return (
-    <Layout>
-      <div className="w-100 d-flex flex-column justify-content-between">
-        <div className="w-100 d-flex justify-content-between p-2">
-          <Badge># 235</Badge>
-          <Badge>N per day: 89</Badge>
-        </div>
-
-        <div className="w-100 text-center">
-          <h3 className="mb-4">The bank is on the corner of Pine Street and First Street.</h3>
-          <h3 className="text-secondary">El banco está en la esquina de Pine Street y First Street.</h3>
-        </div>
-        <div className="h-80px"></div>
-        <div className="w-100 d-flex justify-content-center position-absolute bottom-0">
-          <div className="w-100 w-sm-50 d-flex flex-column">
-            <Progress className="rounded-0" color="warning" animated striped value={41} />
-            <div className="w-100 d-flex h-80px">
-              <Button className="w-100 rounded-0 border-0 text-btn-color" size="lg" color="primary">
-                Result
-              </Button>
-              <Button
-                onClick={readCurrentText}
-                className="w-100 rounded-0 border-0 border-start border-end text-btn-color border-light"
-                size="lg"
-                color="success"
-              >
-                Play <SoundWaveIcon />
-              </Button>
-              <Button className="w-100 rounded-0 border-0 text-btn-color" size="lg" color="danger">
-                Back
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <Layout with100={false}>
+      <Container>
+        <TitleH1 title="Selecciona desde donde quieres comenzar hoy" />
+        <AllWordsTable />
+      </Container>
     </Layout>
+  )
+}
+type WordsType = {
+  [hash: string]: any
+}
+const fakeData: WordsType = {
+  hash1: {
+    id: 1,
+    english: 'Pardon me, do you know where Central Park is?',
+    spanish: 'Disculpe, ¿sabe dónde está Central Park?',
+    createdAt: '2020-07-21 10:44:05',
+    studied: true
+  }
+}
+
+for (let i = 0; i < 100; i++) {
+  const newData: any = { ...fakeData.hash1 }
+  newData.id = i + 1
+  fakeData[`hash${i + 1}`] = newData
+}
+
+function AllWordsTable() {
+  return (
+    <Table className="mb-4 border" bordered hover responsive size="sm">
+      <thead>
+        <tr className="table-dark">
+          <th>#</th>
+          <th className="w-100">{trans('label.english')}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {Object.keys(fakeData).map((key, i) => {
+          const data = fakeData[key]
+          return (
+            <tr key={i} className={classNames({ 'table-success': data.studied })}>
+              <th scope="row">{data.id}</th>
+              <td>
+                <Link className="text-decoration-none" to={`/training/${key}`}>
+                  {data.english}
+                </Link>
+              </td>
+            </tr>
+          )
+        })}
+      </tbody>
+    </Table>
   )
 }

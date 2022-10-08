@@ -1,0 +1,38 @@
+{
+  "label": {
+    "options": "Ops",
+    "edit": "Edit",
+    "remove": "Remove",
+    "logoTextBar": "S-E-TRAINING",
+    "mainMenu": "Menú principal",
+    "automaticStudy": "Estudio automático",
+    "languageToggle": "Intercambiar idioma",
+    "removeDailyProgress": "Eliminar progreso",
+    "admin": "Admin",
+    "totalWords": "Total de oraciones:",
+    "learnEnglishToSpanish": "Aprender de ingles a español",
+    "textLogoLarge": "SAITAMA ENGLISH TRAINING",
+    "textLogoLargeSlogan": "Mejora tu ingles repitiendo más de 1000 oraciones todos los dias",
+    "randomMode": "Practicar en modo aleatorio",
+    "automaticLearn": "Estudiar palabras automáticamente",
+    "startTraining": "Empezar a estudiar",
+    "updateWords": "Actualizar palabras",
+    "loginAdmin": "Login Administrador",
+    "email": "Email",
+    "password": "Contraseña",
+    "nStudiesToday": "N. estudiadas hoy:",
+    "addWord": "Añadir frase",
+    "editWord": "Editar frase",
+    "englishWord": "Oración en ingles",
+    "spanishWord": "Oración en español"
+  },
+  "button": {
+    "login": "Iniciar sesión",
+    "result": "Resultado",
+    "soundPlay": "Leer",
+    "back": "Anterior",
+    "newWord": "Nueva frase",
+    "saveWord": "Guardar oración"
+  },
+  "erros": {}
+}

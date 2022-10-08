@@ -16,13 +16,29 @@ import logoImg from '../assets/img/saitama-logo.webp'
 import { Link } from 'react-router-dom'
 import { trans } from '../config/i18n'
 import { TogglesIcon, PlayIcon, CalendarXIcon } from '../components/Icons'
+import classNames from 'classnames'
 
-export default function Layout({ children }: ChildrenProps) {
+type Layout = ChildrenProps & {
+  with100?: boolean
+}
+
+export default function Layout({ children, with100 = true }: Layout) {
   return (
     <>
       <TopNavBar />
-      <div className="h-100vh d-flex align-items-end">
-        <div className="h-92 w-100 d-flex">{children}</div>
+      <div
+        className={classNames('align-items-end d-block', {
+          'h-100vh d-flex': with100,
+          'mt-60px': !with100
+        })}
+      >
+        <div
+          className={classNames({
+            'h-92 w-100 d-flex': with100
+          })}
+        >
+          {children}
+        </div>
       </div>
     </>
   )
@@ -43,7 +59,7 @@ function TopNavBar() {
             height: 30
           }}
         />
-        {trans('S-E-TRAINING')}
+        {trans('label.logoTextBar')}
       </NavbarBrand>
 
       <NavbarToggler onClick={toggle} />
@@ -51,25 +67,25 @@ function TopNavBar() {
         <Nav className="ms-auto" navbar>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
-              {trans('Menú principal')}
+              {trans('label.mainMenu')}
             </DropdownToggle>
-            <DropdownMenu right>
+            <DropdownMenu end>
               <DropdownItem>
-                <PlayIcon /> {trans('Estudio automático')}
+                <PlayIcon /> {trans('label.automaticStudy')}
               </DropdownItem>
               <DropdownItem>
-                <TogglesIcon /> {trans('Intercambiar idioma')}
+                <TogglesIcon /> {trans('label.languageToggle')}
               </DropdownItem>
               <DropdownItem divider />
               <DropdownItem>
-                <CalendarXIcon /> {trans('Eliminar progreso del día')}
+                <CalendarXIcon /> {trans('label.removeDailyProgress')}
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
 
           <NavItem>
-            <Link className="nav-link" to="/admin">
-              {trans('Administración')}
+            <Link className="nav-link" to="/admin/words">
+              {trans('label.admin')}
             </Link>
           </NavItem>
         </Nav>

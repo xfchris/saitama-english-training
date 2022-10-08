@@ -2,6 +2,7 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import HTMLReactParser from 'html-react-parser'
+import es from './es.json'
 
 i18n.use(initReactI18next).init({
   interpolation: { escapeValue: false },
@@ -9,9 +10,7 @@ i18n.use(initReactI18next).init({
   fallbackLng: 'es',
   resources: {
     es: {
-      translation: {
-        key: 'hello world'
-      }
+      translation: es
     }
   },
   react: {

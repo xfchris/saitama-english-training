@@ -1,25 +1,19 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Admin from '../pages/Admin'
 import Index from '../pages/Index'
-import Training from '../pages/Training'
+import StartIn from '../pages/Training'
+import Login from '../pages/Login'
+import Training from '../pages/Training/Training'
 import { AppProvider } from '../providers/AppProvider'
 import { RoutingProps } from '../types/config'
 
 const routes = [
   {
     path: '/login',
-    element: <Admin />
+    element: <Login />
   },
   {
     path: '/admin/words',
-    element: <Admin />
-  },
-  {
-    path: '/admin/word',
-    element: <Admin />
-  },
-  {
-    path: '/admin/words/:idWork',
     element: <Admin />
   },
   {
@@ -28,6 +22,10 @@ const routes = [
   },
   {
     path: '/training',
+    element: <StartIn />
+  },
+  {
+    path: '/training/:wordHash',
     element: <Training />
   },
   {
