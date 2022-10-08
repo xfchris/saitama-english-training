@@ -5,7 +5,7 @@ import { renderAppWithRoute } from './helpers'
 
 describe('App', () => {
   it('should work as expected', () => {
-    renderAppWithRoute('')
+    renderAppWithRoute()
     expect(screen.getByText(trans('label.logoTextBar'))).toBeInTheDocument()
   })
 })

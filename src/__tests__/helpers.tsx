@@ -5,9 +5,9 @@ import App from '../App'
 
 export const JEST_TIMEOUT = 5000
 
-export function renderAppWithRoute(url: string) {
+export function renderAppWithRoute(url?: string) {
   const history = createMemoryHistory()
-  history.push(url)
+  history.push(url ?? '')
   return render(<App location={history.location} />)
 }
 
