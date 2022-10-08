@@ -4,8 +4,16 @@ import TitleH1 from '../../components/TitleH1'
 import FormWords from '../../components/FormWords'
 import { WordsDataTable } from '../../components/WordsDataTable'
 import { trans } from '../../config/i18n'
+import { useApp } from '../../providers/AppProvider'
 
 export default function Admin() {
+  const { navigate, user } = useApp()
+
+  if (user === null) {
+    navigate('/login')
+    return null
+  }
+
   return (
     <Layout with100={false}>
       <Container>

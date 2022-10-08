@@ -4,13 +4,26 @@ import Layout from '../../layouts/Layout'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { passwordValidation } from '../../utils/helpers'
+import { useApp } from '../../providers/AppProvider'
+import { useState } from 'react'
 
 const schemaValidation = yup
   .object({
-    email: yup.string().email().required(),
-    password: yup.string().required()
+    email: yup.string().email(trans('Invalid email')).required(),
+    password: passwordValidation
   })
   .required()
+
+const defaultValuesLogin = {
+  email: '',
+  password: ''
+}
+
+type SignInFormValuesType = {
+  email: string
+  password: string
+}
 
 export default function Login() {
   const {
@@ -18,14 +31,22 @@ export default function Login() {
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues: {
-      email: '',
-      password: ''
-    },
+    defaultValues: defaultValuesLogin,
     resolver: yupResolver(schemaValidation)
   })
+  const { navigate, user, signIn, signOut } = useApp()
+  const [isLoginLoading, setisLoginLoading] = useState(false)
 
-  const onSubmit = (data: any) => console.log(data)
+  const onSubmit = async (data: SignInFormValuesType) => {
+    setisLoginLoading(true)
+    await signIn(data.email, data.password)
+    setisLoginLoading(false)
+    navigate('/admin/words')
+  }
+
+  if (user === undefined) {
+    return null
+  }
 
   return (
     <Layout>
@@ -33,28 +54,34 @@ export default function Login() {
         <Card className="mb-5 block">
           <CardHeader>{trans('label.loginAdmin')}</CardHeader>
           <CardBody>
-            <Form className="needs-validation" onSubmit={handleSubmit(onSubmit)} noValidate>
-              <FormGroup>
-                <Label for="email">{trans('label.email')}</Label>
-                <Controller
-                  name="email"
-                  control={control}
-                  render={({ field }) => <Input type="email" id="email" invalid={!!errors.email} {...field} />}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="password">{trans('label.password')}</Label>
-                <Controller
-                  name="password"
-                  control={control}
-                  render={({ field }) => <Input type="password" id="password" invalid={!!errors.password} {...field} />}
-                />
-              </FormGroup>
-
-              <Button type="submit" className="mt-2" color="primary">
-                {trans('button.login')}
+            {user ? (
+              <Button type="submit" className="mt-2 w-100" color="danger" onClick={() => signOut()}>
+                {trans('button.logout')}
               </Button>
-            </Form>
+            ) : (
+              <Form className="needs-validation" onSubmit={handleSubmit(onSubmit)} noValidate>
+                <FormGroup>
+                  <Label for="email">{trans('label.email')}</Label>
+                  <Controller
+                    name="email"
+                    control={control}
+                    render={({ field }) => <Input type="email" id="email" invalid={!!errors.email} {...field} />}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="password">{trans('label.password')}</Label>
+                  <Controller
+                    name="password"
+                    control={control}
+                    render={({ field }) => <Input type="password" id="password" invalid={!!errors.password} {...field} />}
+                  />
+                </FormGroup>
+
+                <Button type="submit" className="mt-2 w-100" color="primary">
+                  {isLoginLoading ? 'Loading...' : trans('button.login')}
+                </Button>
+              </Form>
+            )}
           </CardBody>
         </Card>
       </div>

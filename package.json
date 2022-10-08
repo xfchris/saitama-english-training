@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "env-cmd -e Local vite --host",
+    "dev": "env-cmd -e Dev vite --host",
     "build": "tsc && env-cmd -e Dev vite build",
     "test": "env-cmd -e Test vitest",
     "coverage": "env-cmd -e Test vitest run --coverage",
@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^1.8.5",
     "bootstrap": "^5.2.2",
     "classnames": "^2.3.2",
+    "firebase": "^9.11.0",
     "html-react-parser": "^3.0.4",
     "i18next": "^21.9.2",
     "lodash.clonedeep": "^4.5.0",

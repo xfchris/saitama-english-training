@@ -17,10 +17,6 @@ const routes = [
     element: <Admin />
   },
   {
-    path: '/words',
-    element: <Admin />
-  },
-  {
     path: '/training',
     element: <StartIn />
   },
