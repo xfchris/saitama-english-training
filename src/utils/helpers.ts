@@ -1,9 +1,25 @@
 import Swal from 'sweetalert2'
-import * as yup from 'yup'
+import { trans } from '../config/i18n'
 
-export const getToken = () => localStorage.getItem('token')
+export const showMsgError = (msg: string) => {
+  return Swal.fire(trans(msg), undefined, 'error')
+}
 
-export function talkText(msg: string, lang?: string) {
+export const showMsgSuccess = (msg: string) => {
+  return Swal.fire(trans(msg), undefined, 'success')
+}
+
+export const showMsgConfirm = (msg: string) => {
+  return Swal.fire({
+    title: trans(msg),
+    icon: 'warning',
+    showCancelButton: true,
+    cancelButtonText: trans('button.cancel'),
+    confirmButtonText: trans('button.accept')
+  })
+}
+
+export const talkText = (msg: string, lang?: string) => {
   if ('speechSynthesis' in window) {
     speechSynthesis.cancel()
     const u = new SpeechSynthesisUtterance(msg)
@@ -16,4 +32,4 @@ export function talkText(msg: string, lang?: string) {
   }
 }
 
-export const passwordValidation = yup.string().trim().required('Required').min(8).max(200)
+export const getCurrentTimeStamp = () => new Date().getTime().toString().slice(0, -3)

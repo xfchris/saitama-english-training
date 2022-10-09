@@ -1,13 +1,15 @@
-import { Card, CardHeader, Col, Container, Row } from 'reactstrap'
+import { Card, Col, Container, Row } from 'reactstrap'
 import Layout from '../../layouts/Layout'
 import TitleH1 from '../../components/TitleH1'
 import FormWords from '../../components/FormWords'
 import { WordsDataTable } from '../../components/WordsDataTable'
 import { trans } from '../../config/i18n'
 import { useApp } from '../../providers/AppProvider'
+import { useState } from 'react'
 
 export default function Admin() {
   const { navigate, user } = useApp()
+  const [idForUpdate, setIdForUpdate] = useState<string | null>(null)
 
   if (user === null) {
     navigate('/login')
@@ -16,22 +18,17 @@ export default function Admin() {
 
   return (
     <Layout with100={false}>
-      <Container>
+      <Container fluid>
         <TitleH1 title={trans('label.wordsManage')} />
         <Row className="my-4">
           <Col sm={8}>
             <Card className="rounded-0 mb-3">
-              <WordsDataTable />
+              <WordsDataTable setIdForUpdate={setIdForUpdate} />
             </Card>
           </Col>
 
           <Col sm={4}>
-            <FormWords />
-            <Card className="rounded-0 mt-4">
-              <CardHeader>
-                <b>{trans('label.totalWords')}</b> 3123
-              </CardHeader>
-            </Card>
+            <FormWords idForUpdate={idForUpdate} setIdForUpdate={setIdForUpdate} />
           </Col>
         </Row>
       </Container>

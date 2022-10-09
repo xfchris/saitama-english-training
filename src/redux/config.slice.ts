@@ -1,7 +1,20 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { firebaseApi } from '../services'
+import { Word } from '../types/config'
 import { RootState } from './store'
 
-const initialState = {}
+type InitialStateType = {
+  words: Word[]
+}
+const initialState: InitialStateType = {
+  words: []
+}
+
+export const getWords = createAsyncThunk('getWords', async () => {
+  const response = await firebaseApi('words').getAll<Word>()
+  console.log(response)
+  return response
+})
 
 const configApp = createSlice({
   name: 'configApp',
@@ -11,19 +24,14 @@ const configApp = createSlice({
       state.data.viewerConfig.lang = action.payload
     },
     resetConfigApp: () => {
-      localStorage.clear()
       return initialState
     }
+  },
+  extraReducers: builder => {
+    builder.addCase(getWords.fulfilled, (state: InitialStateType, action: PayloadAction<Word[]>) => {
+      state.words = action.payload
+    })
   }
-  /*extraReducers: builder => {
-    builder
-      .addCase(login.fulfilled, (state: any, action: any) => {
-        state.data = action.payload
-        localStorage.setItem('token', state.data.token as string)
-        state.status = 'idle'
-        state.error = null
-      })
-  }*/
 })
 
 export const { setLanguaje, resetConfigApp } = configApp.actions

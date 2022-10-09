@@ -3,30 +3,53 @@ import { trans } from '../config/i18n'
 import AlertNoRecords from './AlertNoRecords'
 import DataTable, { TableStyles } from 'react-data-table-component'
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
+import { Dispatch, SetStateAction } from 'react'
+import { Word } from '../types/config'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { getWords, selectConfigApp } from '../redux/config.slice'
+import { firebaseApi } from '../services'
+import { showMsgConfirm, showMsgError, showMsgSuccess } from '../utils/helpers'
 
-const fakeData = [
+const fakeData: Word[] = [
   {
-    id: 1,
+    id: '1',
+    category: '1',
     english: 'Pardon me, do you know where Central Park is?',
     spanish: 'Disculpe, ¿sabe dónde está Central Park?',
-    createdAt: '2020-07-21 10:44:05'
+    createdAt: 123123
   }
 ]
 for (let i = 0; i < 100; i++) {
   const newData = { ...fakeData[0] }
-  newData.id = i + 2
+  newData.id = `${i + 2}`
   fakeData.push(newData)
 }
 
-export function WordsDataTable() {
-  const { data, isLoading } = { data: fakeData, isLoading: false }
+type WordsDataTableProps = {
+  setIdForUpdate: Dispatch<SetStateAction<string | null>>
+}
 
-  if (isLoading) {
-    return <>Loading...</>
+export function WordsDataTable({ setIdForUpdate }: WordsDataTableProps) {
+  const { words } = useAppSelector(selectConfigApp)
+  const dispatch = useAppDispatch()
+
+  if (!words || !words.length) {
+    return <AlertNoRecords title="label.noRecords" />
   }
 
-  if (!data || !data.length) {
-    return <AlertNoRecords title="label.noRecords" />
+  const removeWord = (id: string) => {
+    showMsgConfirm('label.confirm').then(result => {
+      if (result.isConfirmed) {
+        firebaseApi('words')
+          .remove(id)
+          .then(() => {
+            dispatch(getWords())
+            showMsgSuccess('label.completed')
+          })
+          .catch(() => showMsgError('error.firebaseError'))
+      }
+    })
+    console.log('remove', id)
   }
 
   const tableColumns = [
@@ -34,12 +57,12 @@ export function WordsDataTable() {
       name: trans('label.id'),
       width: '10%',
       sortable: true,
-      selector: (row: any) => row.id,
-      cell: (row: any) => {
+      selector: (row: Word) => row.id,
+      cell: (row: Word, index: number) => {
         const link = `/words/${row.id}`
         return (
-          <Link className="text-decoration-none fw-bold text-danger" to={link}>
-            {row.id}
+          <Link className="text-decoration-none fw-bold text-danger" to={link} title={row.id}>
+            {index}
           </Link>
         )
       }
@@ -48,24 +71,24 @@ export function WordsDataTable() {
       id: 'name',
       name: trans('label.english'),
       sortable: true,
-      selector: (row: any) => row.english
+      selector: (row: Word) => row.english
     },
     {
       name: trans('label.spanish'),
       sortable: true,
-      selector: (row: any) => row.spanish
+      selector: (row: Word) => row.spanish
     },
     {
       sortable: false,
       width: '92px',
-      cell: (row: any) => {
+      cell: (row: Word) => {
         return (
           <>
             <UncontrolledDropdown size="sm">
               <DropdownToggle caret>{trans('label.options')}</DropdownToggle>
               <DropdownMenu>
-                <DropdownItem>{trans('label.edit')}</DropdownItem>
-                <DropdownItem>{trans('label.remove')}</DropdownItem>
+                <DropdownItem onClick={() => setIdForUpdate(row.id)}>{trans('label.edit')}</DropdownItem>
+                <DropdownItem onClick={() => removeWord(row.id)}>{trans('label.remove')}</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
           </>
@@ -78,7 +101,7 @@ export function WordsDataTable() {
     <div className="react-dataTable react-dataTable-body-transparent">
       <DataTable
         pagination
-        data={data}
+        data={words}
         columns={tableColumns}
         className="react-dataTable"
         paginationRowsPerPageOptions={[10, 25, 50, 100]}

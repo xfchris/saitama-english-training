@@ -1,16 +1,17 @@
-import React from 'react'
 import { Container, Table } from 'reactstrap'
 import TitleH1 from '../../components/TitleH1'
 import { trans } from '../../config/i18n'
 import Layout from '../../layouts/Layout'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
+import { useAppSelector } from '../../hooks'
+import { selectConfigApp } from '../../redux/config.slice'
 
 export default function StartIn() {
   return (
     <Layout with100={false}>
       <Container>
-        <TitleH1 title="Selecciona desde donde quieres comenzar hoy" />
+        <TitleH1 title={trans('label.selectStartWord')} />
         <AllWordsTable />
       </Container>
     </Layout>
@@ -36,6 +37,8 @@ for (let i = 0; i < 100; i++) {
 }
 
 function AllWordsTable() {
+  const { words } = useAppSelector(selectConfigApp)
+
   return (
     <Table className="mb-4 border" bordered hover responsive size="sm">
       <thead>

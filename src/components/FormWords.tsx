@@ -3,45 +3,101 @@ import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { trans } from '../config/i18n'
+import { firebaseApi } from '../services'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Word } from '../types/config'
+import { showMsgError } from '../utils/helpers'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { getWords, selectConfigApp } from '../redux/config.slice'
+import { categories } from '../config/constants'
 
 const schemaValidation = yup
   .object({
     english: yup.string().required(),
-    password: yup.string().required()
+    spanish: yup.string().required()
   })
   .required()
 
-export default function FormWords() {
+type FormWordsProps = {
+  idForUpdate: string | null
+  setIdForUpdate: Dispatch<SetStateAction<string | null>>
+}
+
+const defaultValues = {
+  category: '1',
+  english: '',
+  spanish: ''
+}
+
+export default function FormWords({ idForUpdate, setIdForUpdate }: FormWordsProps) {
   const {
     control,
+    reset,
+    register,
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues: {
-      english: '',
-      spanish: ''
-    },
+    defaultValues,
     resolver: yupResolver(schemaValidation)
   })
+  const [isLoading, setIsLoading] = useState(false)
+  const dispatch = useAppDispatch()
+  const { words } = useAppSelector(selectConfigApp)
 
-  const onSubmit = (data: any) => console.log(data)
+  console.log(errors)
+
+  const onSubmit = async (word: Partial<Word>) => {
+    try {
+      setIsLoading(true)
+      await firebaseApi('words').createOrUpdate(idForUpdate, word)
+      handleNewWord()
+      dispatch(getWords())
+    } catch (error) {
+      console.log(error)
+      showMsgError('error.firebaseError')
+    }
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    const wordToEdit = words.find(word => word.id === idForUpdate)
+    reset(wordToEdit ?? defaultValues)
+  }, [idForUpdate])
+
+  const handleNewWord = () => {
+    reset(defaultValues)
+    setIdForUpdate(null)
+  }
 
   return (
     <Card className="rounded-0 block">
       <CardHeader>
         <div className="d-flex align-items-center justify-content-between">
           <span>{trans('label.addWord')}</span>
-          <Button size="sm">{trans('button.newWord')}</Button>
+          <Button onClick={handleNewWord} size="sm">
+            {trans('button.newWord')}
+          </Button>
         </div>
       </CardHeader>
       <CardBody>
         <Form className="needs-validation" onSubmit={handleSubmit(onSubmit)} noValidate>
           <FormGroup>
+            <Label for="cateogry">{trans('label.categories')}</Label>
+            <select id="category" className="form-select" {...register('category')}>
+              {categories.map(category => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </FormGroup>
+
+          <FormGroup>
             <Label for="english">{trans('label.englishWord')}</Label>
             <Controller
               name="english"
               control={control}
-              render={({ field }) => <Input rows="4" type="textarea" id="english" invalid={!!errors.english} {...field} />}
+              render={({ field }) => <Input rows="3" type="textarea" id="english" invalid={!!errors.english} {...field} />}
             />
           </FormGroup>
           <FormGroup>
@@ -49,12 +105,12 @@ export default function FormWords() {
             <Controller
               name="spanish"
               control={control}
-              render={({ field }) => <Input rows="4" type="textarea" id="spanish" invalid={!!errors.spanish} {...field} />}
+              render={({ field }) => <Input rows="3" type="textarea" id="spanish" invalid={!!errors.spanish} {...field} />}
             />
           </FormGroup>
-          <p>Id: 234234234</p>
-          <Button type="submit" className="mt-2 w-100" color="success">
-            {trans('button.saveWord')}
+          <p>Id: {idForUpdate}</p>
+          <Button type="submit" className="mt-2 w-100" color="success" disabled={isLoading}>
+            {isLoading ? 'Espere...' : trans('button.saveWord')}
           </Button>
         </Form>
       </CardBody>

@@ -4,14 +4,13 @@ import Layout from '../../layouts/Layout'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { passwordValidation } from '../../utils/helpers'
 import { useApp } from '../../providers/AppProvider'
 import { useState } from 'react'
 
 const schemaValidation = yup
   .object({
     email: yup.string().email(trans('Invalid email')).required(),
-    password: passwordValidation
+    password: yup.string().trim().required('Required').min(8).max(200)
   })
   .required()
 

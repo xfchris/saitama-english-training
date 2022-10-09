@@ -27,7 +27,12 @@
     "spanishWord": "Oración en español",
     "english": "Ingles",
     "spanish": "Español",
-    "wordsManage": "Gestión de oraciones"
+    "wordsManage": "Gestión de oraciones",
+    "id": "id",
+    "categories": "Categorias",
+    "confirm": "Está seguro que desea continuar?",
+    "completed": "Completado",
+    "selectStartWord": "Selecciona desde donde quieres comenzar a estudiar"
   },
   "button": {
     "login": "Iniciar sesión",
@@ -36,9 +41,13 @@
     "back": "Anterior",
     "newWord": "Nueva frase",
     "saveWord": "Guardar oración",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "cancel": "Cancelar",
+    "accept": "Aceptar",
+    "continue": "Continuar"
   },
   "error": {
-    "invalidLogin": "Email or password incorrect"
+    "invalidLogin": "Email or password incorrect",
+    "firebaseError": "Error al comunicarse con firebase"
   }
 }
