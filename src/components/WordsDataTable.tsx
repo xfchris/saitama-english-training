@@ -6,9 +6,10 @@ import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from
 import { Dispatch, SetStateAction } from 'react'
 import { Word } from '../types/config'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { getWords, selectConfigApp } from '../redux/config.slice'
+import { selectConfigApp } from '../redux/config.slice'
 import { firebaseApi } from '../services'
 import { showMsgConfirm, showMsgError, showMsgSuccess } from '../utils/helpers'
+import { getWords } from '../redux/actions'
 
 const fakeData: Word[] = [
   {
@@ -49,7 +50,6 @@ export function WordsDataTable({ setIdForUpdate }: WordsDataTableProps) {
           .catch(() => showMsgError('error.firebaseError'))
       }
     })
-    console.log('remove', id)
   }
 
   const tableColumns = [

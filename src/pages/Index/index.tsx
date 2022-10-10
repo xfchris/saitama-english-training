@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, FormGroup, Input, Label } from 'reactstrap'
+import Loading from '../../components/Loading'
 import { trans } from '../../config/i18n'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import Layout from '../../layouts/Layout'
-import { getWords, selectConfigApp } from '../../redux/config.slice'
+import { getWords } from '../../redux/actions'
+import { selectConfigApp } from '../../redux/config.slice'
 import { showMsgError } from '../../utils/helpers'
 
 export default function Index() {
@@ -48,9 +50,9 @@ export default function Index() {
               {trans('label.startTraining')}
             </Link>
             <Button onClick={handleUpdateWords} className="w-250px mt-5 text-light" size="lg" color="info" disabled={isUpdateWordsLoading}>
-              {isUpdateWordsLoading ? 'Espere... ' : trans('label.updateWords')}
+              {isUpdateWordsLoading ? <Loading /> : trans('label.updateWords')}
             </Button>
-            {trans('label.totalWords')} {words.length}
+            {words && `${trans('label.totalWords')} ${words.length}`}
           </div>
         </div>
       </div>

@@ -47,7 +47,7 @@
     "continue": "Continuar"
   },
   "error": {
-    "invalidLogin": "Email or password incorrect",
+    "invalidLogin": "Email o contraseña incorrecta",
     "firebaseError": "Error al comunicarse con firebase"
   }
 }

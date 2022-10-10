@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useApp } from '../../providers/AppProvider'
 import { useState } from 'react'
+import Loading from '../../components/Loading'
 
 const schemaValidation = yup
   .object({
@@ -77,7 +78,7 @@ export default function Login() {
                 </FormGroup>
 
                 <Button type="submit" className="mt-2 w-100" color="primary">
-                  {isLoginLoading ? 'Loading...' : trans('button.login')}
+                  {isLoginLoading ? <Loading /> : trans('button.login')}
                 </Button>
               </Form>
             )}

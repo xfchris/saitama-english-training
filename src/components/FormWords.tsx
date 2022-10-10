@@ -8,8 +8,10 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { Word } from '../types/config'
 import { showMsgError } from '../utils/helpers'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { getWords, selectConfigApp } from '../redux/config.slice'
+import { selectConfigApp } from '../redux/config.slice'
 import { categories } from '../config/constants'
+import { getWords } from '../redux/actions'
+import Loading from './Loading'
 
 const schemaValidation = yup
   .object({
@@ -110,7 +112,7 @@ export default function FormWords({ idForUpdate, setIdForUpdate }: FormWordsProp
           </FormGroup>
           <p>Id: {idForUpdate}</p>
           <Button type="submit" className="mt-2 w-100" color="success" disabled={isLoading}>
-            {isLoading ? 'Espere...' : trans('button.saveWord')}
+            {isLoading ? <Loading /> : trans('button.saveWord')}
           </Button>
         </Form>
       </CardBody>

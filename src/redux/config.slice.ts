@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { firebaseApi } from '../services'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Word } from '../types/config'
+import { getWords } from './actions'
 import { RootState } from './store'
 
 type InitialStateType = {
@@ -9,12 +9,6 @@ type InitialStateType = {
 const initialState: InitialStateType = {
   words: []
 }
-
-export const getWords = createAsyncThunk('getWords', async () => {
-  const response = await firebaseApi('words').getAll<Word>()
-  console.log(response)
-  return response
-})
 
 const configApp = createSlice({
   name: 'configApp',
