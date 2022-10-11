@@ -1,61 +1,67 @@
-import { Container, Table } from 'reactstrap'
+import { Button, Container, Table } from 'reactstrap'
 import TitleH1 from '../../components/TitleH1'
 import { trans } from '../../config/i18n'
 import Layout from '../../layouts/Layout'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { useAppSelector } from '../../hooks'
-import { selectConfigApp } from '../../redux/config.slice'
+import { selectConfigApp, setStudiedhashWords } from '../../redux/config.slice'
+import { useApp } from '../../providers/AppProvider'
+import { showMsgConfirm } from '../../utils/helpers'
 
 export default function StartIn() {
+  const { dispatch } = useApp()
+
+  const handleRemoveStudiedWords = () => {
+    showMsgConfirm('label.confirm').then(response => {
+      if (response.isConfirmed) {
+        dispatch(setStudiedhashWords([]))
+      }
+    })
+  }
+
   return (
     <Layout with100={false}>
       <Container>
         <TitleH1 title={trans('label.selectStartWord')} />
+        <div className="text-center mb-3">
+          <Button onClick={handleRemoveStudiedWords} size="sm">
+            {trans('button.removeStudiedWords')}
+          </Button>
+        </div>
         <AllWordsTable />
       </Container>
     </Layout>
   )
 }
-type WordsType = {
-  [hash: string]: any
-}
-const fakeData: WordsType = {
-  hash1: {
-    id: 1,
-    english: 'Pardon me, do you know where Central Park is?',
-    spanish: 'Disculpe, ¿sabe dónde está Central Park?',
-    createdAt: '2020-07-21 10:44:05',
-    studied: true
-  }
-}
-
-for (let i = 0; i < 100; i++) {
-  const newData: any = { ...fakeData.hash1 }
-  newData.id = i + 1
-  fakeData[`hash${i + 1}`] = newData
-}
 
 function AllWordsTable() {
-  const { words } = useAppSelector(selectConfigApp)
+  const { words, studiedHashWords } = useAppSelector(selectConfigApp)
 
   return (
     <Table className="mb-4 border" bordered hover responsive size="sm">
       <thead>
         <tr className="table-dark">
-          <th>#</th>
-          <th className="w-100">{trans('label.english')}</th>
+          <th className="w-5px">#</th>
+          <th>{trans('label.english')}</th>
+          <th className="w-50 d-none d-sm-table-cell">{trans('label.spanish')}</th>
         </tr>
       </thead>
       <tbody>
-        {Object.keys(fakeData).map((key, i) => {
-          const data = fakeData[key]
+        {words.map((word, i) => {
+          const studied = studiedHashWords?.includes(word.id)
           return (
-            <tr key={i} className={classNames({ 'table-success': data.studied })}>
-              <th scope="row">{data.id}</th>
+            <tr key={i} className={classNames({ 'table-success': studied })}>
+              <th scope="row">{word._i}</th>
               <td>
-                <Link className="text-decoration-none" to={`/training/${key}`}>
-                  {data.english}
+                <Link className="text-decoration-none" to={`/training/${word._i}`}>
+                  {word.english}
+                </Link>
+              </td>
+
+              <td className="d-none d-sm-table-cell">
+                <Link className="text-decoration-none" to={`/training/${word._i}`}>
+                  {word.spanish}
                 </Link>
               </td>
             </tr>

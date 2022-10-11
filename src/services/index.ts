@@ -26,7 +26,7 @@ class DatabaseApi {
 
   static getAll = async <T>() => {
     const colRef = collection(db, this.collectionName)
-    const result = await getDocs(query(colRef, orderBy('createdAt', 'desc')))
+    const result = await getDocs(query(colRef, orderBy('createdAt', 'asc')))
     return getArrayFromCollection(result) as T[]
   }
 
@@ -42,7 +42,7 @@ export const firebaseApi = (collectionName: string) => {
 }
 
 const getArrayFromCollection = (collection: any) => {
-  return collection.docs.map((doc: any) => {
-    return { ...doc.data(), id: doc.id }
+  return collection.docs.map((doc: any, i: number) => {
+    return { ...doc.data(), id: doc.id, _i: i + 1 }
   })
 }

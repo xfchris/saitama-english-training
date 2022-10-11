@@ -1,34 +1,98 @@
-import { Badge, Button, Progress } from 'reactstrap'
+import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { Badge, Button, Fade, Progress } from 'reactstrap'
 import { SoundWaveIcon } from '../../components/Icons'
 import { trans } from '../../config/i18n'
+import { useAppSelector } from '../../hooks'
 import Layout from '../../layouts/Layout'
-import { talkText } from '../../utils/helpers'
+import { useApp } from '../../providers/AppProvider'
+import { addStudiedWord, selectConfigApp, setStudiedhashWords } from '../../redux/config.slice'
+import { getItemRandArray, getWordNext, showMsgError, showMsgSuccess, talkText } from '../../utils/helpers'
 
 export default function Training() {
+  const { wordId } = useParams()
+  const {
+    words,
+    studiedHashWords,
+    configTrain: { studyRandomMode, studyEnglishToSpanish }
+  } = useAppSelector(selectConfigApp)
+  const { navigate, dispatch } = useApp()
+  const [showResult, setShowResult] = useState(false)
+
+  const word = wordId ? words.find(w => w._i === parseInt(wordId)) : undefined
+
+  if (!word) {
+    showMsgError('error.wordNotExist').then(() => navigate('/training'))
+    return null
+  }
+
   const readCurrentText = () => {
-    talkText('The bank is on the corner of Pine Street and First Street.')
-    console.log('leyendo texto')
+    talkText(word.english)
+  }
+
+  const handleResult = () => {
+    if (!showResult) {
+      readCurrentText()
+      setShowResult(true)
+      dispatch(addStudiedWord(word.id))
+    } else {
+      const studiedWords = [...studiedHashWords, word.id]
+      const wordsNotStudied = words?.filter(word => !studiedWords.includes(word.id))
+
+      if (!wordsNotStudied?.length) {
+        showMsgSuccess('info.allWordsStudied').then(() => {
+          dispatch(setStudiedhashWords([]))
+          setShowResult(false)
+          navigate('/')
+        })
+      } else {
+        const nextWord = studyRandomMode ? getItemRandArray(wordsNotStudied) : getWordNext(wordsNotStudied, wordId)
+        setShowResult(false)
+        navigate(`/training/${nextWord._i}`)
+      }
+    }
+  }
+
+  const handleBack = () => {
+    setShowResult(false)
+    const studiedHashWordsFiltered = studiedHashWords.filter(hash => hash !== word.id)
+    if (!studiedHashWordsFiltered) {
+      navigate('/training/1')
+    } else {
+      const backHash = studiedHashWordsFiltered.pop()
+      const backWord = words.find(wordSelected => wordSelected.id === backHash)
+      dispatch(setStudiedhashWords(studiedHashWordsFiltered))
+      navigate(`/training/${backWord?._i || 1}`)
+    }
   }
 
   return (
     <Layout>
       <div className="w-100 d-flex flex-column justify-content-between">
         <div className="w-100 d-flex justify-content-between p-2">
-          <Badge># 235</Badge>
-          <Badge>{trans('label.nStudiesToday')} 89</Badge>
+          <Badge># {wordId}</Badge>
+          <Badge>
+            {trans('label.nStudiesToday')} {studiedHashWords.length}
+          </Badge>
         </div>
 
         <div className="w-100 text-center">
-          <h3 className="mb-4">The bank is on the corner of Pine Street and First Street.</h3>
-          <h3 className="text-secondary">El banco está en la esquina de Pine Street y First Street.</h3>
+          <Fade>
+            <h3 className="mb-4">{studyEnglishToSpanish ? word.english : word.spanish}</h3>
+          </Fade>
+          {showResult && (
+            <Fade>
+              <h3 className="text-secondary">{studyEnglishToSpanish ? word.spanish : word.english}</h3>
+            </Fade>
+          )}
         </div>
         <div className="h-80px"></div>
         <div className="w-100 d-flex justify-content-center position-absolute bottom-0">
           <div className="w-100 w-sm-50 d-flex flex-column">
             <Progress className="rounded-0" color="warning" animated striped value={41} />
             <div className="w-100 d-flex h-80px">
-              <Button className="w-100 rounded-0 border-0 text-btn-color" size="lg" color="primary">
-                {trans('button.result')}
+              <Button onClick={handleResult} className="w-100 rounded-0 border-0 text-btn-color" size="lg" color="primary">
+                {showResult ? trans('button.next') : trans('button.result')}
               </Button>
               <Button
                 onClick={readCurrentText}
@@ -38,7 +102,13 @@ export default function Training() {
               >
                 {trans('button.soundPlay')} <SoundWaveIcon />
               </Button>
-              <Button className="w-100 rounded-0 border-0 text-btn-color" size="lg" color="danger">
+              <Button
+                onClick={handleBack}
+                className="w-100 rounded-0 border-0 text-btn-color"
+                size="lg"
+                color="danger"
+                disabled={!studiedHashWords.length}
+              >
                 {trans('button.back')}
               </Button>
             </div>

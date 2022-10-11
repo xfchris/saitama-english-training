@@ -13,6 +13,7 @@ export type ChildrenProps = {
 export type PromiseVoidType = () => Promise<void>
 
 export type Word = {
+  _i: number
   id: string
   category: string
   english: string

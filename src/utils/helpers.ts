@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 import { trans } from '../config/i18n'
+import { Word } from '../types/config'
 
 export const showMsgError = (msg: string) => {
   return Swal.fire(trans(msg), undefined, 'error')
@@ -33,3 +34,11 @@ export const talkText = (msg: string, lang?: string) => {
 }
 
 export const getCurrentTimeStamp = () => new Date().getTime().toString().slice(0, -3)
+
+export const getItemRandArray = (array: any[]) => {
+  return array[Math.floor(Math.random() * array.length)]
+}
+
+export const getWordNext = (wordsNotStudied: Word[], wordId: string | undefined) => {
+  return wordsNotStudied?.find(wordSelected => wordSelected._i > parseInt(wordId || '1')) ?? wordsNotStudied[0]
+}

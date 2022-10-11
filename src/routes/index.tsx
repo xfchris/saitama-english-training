@@ -21,7 +21,7 @@ const routes = [
     element: <StartIn />
   },
   {
-    path: '/training/:wordHash',
+    path: '/training/:wordId',
     element: <Training />
   },
   {

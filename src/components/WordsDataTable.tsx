@@ -11,21 +11,6 @@ import { firebaseApi } from '../services'
 import { showMsgConfirm, showMsgError, showMsgSuccess } from '../utils/helpers'
 import { getWords } from '../redux/actions'
 
-const fakeData: Word[] = [
-  {
-    id: '1',
-    category: '1',
-    english: 'Pardon me, do you know where Central Park is?',
-    spanish: 'Disculpe, ¿sabe dónde está Central Park?',
-    createdAt: 123123
-  }
-]
-for (let i = 0; i < 100; i++) {
-  const newData = { ...fakeData[0] }
-  newData.id = `${i + 2}`
-  fakeData.push(newData)
-}
-
 type WordsDataTableProps = {
   setIdForUpdate: Dispatch<SetStateAction<string | null>>
 }
@@ -54,21 +39,21 @@ export function WordsDataTable({ setIdForUpdate }: WordsDataTableProps) {
 
   const tableColumns = [
     {
+      id: 'id',
       name: trans('label.id'),
       width: '10%',
       sortable: true,
-      selector: (row: Word) => row.id,
-      cell: (row: Word, index: number) => {
+      selector: (row: Word) => row._i,
+      cell: (row: Word) => {
         const link = `/words/${row.id}`
         return (
           <Link className="text-decoration-none fw-bold text-danger" to={link} title={row.id}>
-            {index}
+            {row._i}
           </Link>
         )
       }
     },
     {
-      id: 'name',
       name: trans('label.english'),
       sortable: true,
       selector: (row: Word) => row.english
@@ -106,7 +91,8 @@ export function WordsDataTable({ setIdForUpdate }: WordsDataTableProps) {
         className="react-dataTable"
         paginationRowsPerPageOptions={[10, 25, 50, 100]}
         customStyles={customStyles}
-        defaultSortAsc={true}
+        defaultSortAsc={false}
+        defaultSortFieldId="id"
       />
     </div>
   )

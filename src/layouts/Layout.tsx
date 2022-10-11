@@ -1,21 +1,10 @@
 import { ChildrenProps } from '../types/config'
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from 'reactstrap'
+import { Collapse, Navbar, NavbarToggler, Nav, NavItem, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import { useState } from 'react'
 import logoImg from '../assets/img/saitama-logo.webp'
 import { Link } from 'react-router-dom'
 import { trans } from '../config/i18n'
-import { TogglesIcon, PlayIcon, CalendarXIcon } from '../components/Icons'
+import { TogglesIcon, PlayIcon } from '../components/Icons'
 import classNames from 'classnames'
 
 type Layout = ChildrenProps & {
@@ -50,7 +39,7 @@ function TopNavBar() {
 
   return (
     <Navbar color="info" light={true} expand="sm" fixed="top">
-      <NavbarBrand className="d-flex align-items-center" href="/">
+      <Link to="/" className="d-flex align-items-center navbar-brand">
         <img
           className="me-1"
           alt="logo"
@@ -60,7 +49,7 @@ function TopNavBar() {
           }}
         />
         {trans('label.logoTextBar')}
-      </NavbarBrand>
+      </Link>
 
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
@@ -73,12 +62,9 @@ function TopNavBar() {
               <DropdownItem>
                 <PlayIcon /> {trans('label.automaticStudy')}
               </DropdownItem>
-              <DropdownItem>
-                <TogglesIcon /> {trans('label.languageToggle')}
-              </DropdownItem>
               <DropdownItem divider />
               <DropdownItem>
-                <CalendarXIcon /> {trans('label.removeDailyProgress')}
+                <TogglesIcon /> {trans('label.languageToggle')}
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>

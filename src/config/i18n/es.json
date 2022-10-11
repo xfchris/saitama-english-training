@@ -14,13 +14,13 @@
     "textLogoLarge": "SAITAMA ENGLISH TRAINING",
     "textLogoLargeSlogan": "Mejora tu ingles repitiendo más de 1000 oraciones todos los dias",
     "randomMode": "Practicar en modo aleatorio",
-    "automaticLearn": "Estudiar palabras automáticamente",
+    "automaticLearn": "Pasar palabras automáticamente",
     "startTraining": "Empezar a estudiar",
     "updateWords": "Actualizar palabras",
     "loginAdmin": "Login Administrador",
     "email": "Email",
     "password": "Contraseña",
-    "nStudiesToday": "N. estudiadas hoy:",
+    "nStudiesToday": "N. estudiadas:",
     "addWord": "Añadir frase",
     "editWord": "Editar frase",
     "englishWord": "Oración en ingles",
@@ -37,17 +37,23 @@
   "button": {
     "login": "Iniciar sesión",
     "result": "Resultado",
-    "soundPlay": "Leer",
+    "soundPlay": "Escuchar",
     "back": "Anterior",
     "newWord": "Nueva frase",
     "saveWord": "Guardar oración",
     "logout": "Cerrar sesión",
     "cancel": "Cancelar",
     "accept": "Aceptar",
-    "continue": "Continuar"
+    "continue": "Continuar",
+    "next": "Siguiente",
+    "removeStudiedWords": "Borrar palabras estudiadas"
   },
   "error": {
     "invalidLogin": "Email o contraseña incorrecta",
-    "firebaseError": "Error al comunicarse con firebase"
+    "firebaseError": "Error al comunicarse con firebase",
+    "wordNotExist": "La palabra no existe"
+  },
+  "info": {
+    "allWordsStudied": "Felicidades! terminaste de estudiar todas las palabras."
   }
 }
