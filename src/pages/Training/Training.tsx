@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Badge, Button, Fade, Progress } from 'reactstrap'
-import { SoundWaveIcon } from '../../components/Icons'
+import { useInterval } from 'usehooks-ts'
+import { MAX_PROGRESS_PERCENT } from '../../config/constants'
 import { trans } from '../../config/i18n'
 import { useAppSelector } from '../../hooks'
 import Layout from '../../layouts/Layout'
@@ -14,12 +15,32 @@ export default function Training() {
   const {
     words,
     studiedHashWords,
-    configTrain: { studyRandomMode, studyEnglishToSpanish }
+    configTrain: { studyRandomMode, studyEnglishToSpanish, studyAutomatic, velocityStudyAutomatic }
   } = useAppSelector(selectConfigApp)
   const { navigate, dispatch } = useApp()
   const [showResult, setShowResult] = useState(false)
-
+  const [runAutomaticTime, setRunAutomaticTime] = useState(false)
+  const [percentAutomaticBar, setPercentAutomaticBar] = useState(MAX_PROGRESS_PERCENT)
   const word = wordId ? words.find(w => w._i === parseInt(wordId)) : undefined
+
+  useInterval(
+    () => {
+      setPercentAutomaticBar(prev => {
+        const sum = 3 * velocityStudyAutomatic
+        return showResult ? prev + sum : prev - velocityStudyAutomatic
+      })
+      if ((!showResult && percentAutomaticBar <= -20) || (showResult && percentAutomaticBar >= MAX_PROGRESS_PERCENT)) {
+        handleResult()
+      }
+    },
+    runAutomaticTime ? 30 : null
+  )
+
+  useEffect(() => {
+    if (word) {
+      setRunAutomaticTime(studyAutomatic)
+    }
+  }, [studyAutomatic])
 
   if (!word) {
     showMsgError('error.wordNotExist').then(() => navigate('/training'))
@@ -40,6 +61,7 @@ export default function Training() {
       const wordsNotStudied = words?.filter(word => !studiedWords.includes(word.id))
 
       if (!wordsNotStudied?.length) {
+        setRunAutomaticTime(false)
         showMsgSuccess('info.allWordsStudied').then(() => {
           dispatch(setStudiedhashWords([]))
           setShowResult(false)
@@ -89,7 +111,12 @@ export default function Training() {
         <div className="h-80px"></div>
         <div className="w-100 d-flex justify-content-center position-absolute bottom-0">
           <div className="w-100 w-sm-50 d-flex flex-column">
-            <Progress className="rounded-0" color="warning" animated striped value={41} />
+            {studyAutomatic && (
+              <Fade>
+                <Progress className="rounded-0 animation-progress-ms" color="warning" animated striped value={percentAutomaticBar} />
+              </Fade>
+            )}
+
             <div className="w-100 d-flex h-80px">
               <Button onClick={handleResult} className="w-100 rounded-0 border-0 text-btn-color" size="lg" color="primary">
                 {showResult ? trans('button.next') : trans('button.result')}
@@ -100,7 +127,7 @@ export default function Training() {
                 size="lg"
                 color="success"
               >
-                {trans('button.soundPlay')} <SoundWaveIcon />
+                {trans('button.soundPlay')}
               </Button>
               <Button
                 onClick={handleBack}

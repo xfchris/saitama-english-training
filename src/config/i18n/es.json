@@ -6,9 +6,9 @@
     "logoTextBar": "S-E-TRAINING",
     "mainMenu": "Menú principal",
     "automaticStudy": "Estudio automático",
-    "languageToggle": "Intercambiar idioma",
+    "languageToggle": "Cambiar idioma",
     "removeDailyProgress": "Eliminar progreso",
-    "admin": "Admin",
+    "admin": "Administrador",
     "totalWords": "Total de oraciones:",
     "learnEnglishToSpanish": "Aprender de ingles a español",
     "textLogoLarge": "SAITAMA ENGLISH TRAINING",
@@ -32,7 +32,9 @@
     "categories": "Categorias",
     "confirm": "Está seguro que desea continuar?",
     "completed": "Completado",
-    "selectStartWord": "Selecciona desde donde quieres comenzar a estudiar"
+    "selectStartWord": "Selecciona desde donde quieres comenzar a estudiar",  
+    "stopAutomaticStudy": "Pausar s. automático",
+    "velocityAutomatic": "Velocidad del paso de las palabras"
   },
   "button": {
     "login": "Iniciar sesión",

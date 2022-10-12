@@ -26,7 +26,7 @@ export const talkText = (msg: string, lang?: string) => {
     const u = new SpeechSynthesisUtterance(msg)
     u.lang = lang ?? 'en-US'
     u.rate = 1
-    u.pitch = 0.9
+    u.pitch = 1
     speechSynthesis.speak(u)
   } else {
     Swal.fire('Sorry', 'our browser does not support text to speech!')

@@ -4,14 +4,17 @@ import { useState } from 'react'
 import logoImg from '../assets/img/saitama-logo.webp'
 import { Link } from 'react-router-dom'
 import { trans } from '../config/i18n'
-import { TogglesIcon, PlayIcon } from '../components/Icons'
+import { TogglesIcon, PlayIcon, PauseIcon } from '../components/Icons'
 import classNames from 'classnames'
+import { useApp } from '../providers/AppProvider'
+import { useSelector } from 'react-redux'
+import { selectConfigApp, setStudyAutomatic } from '../redux/config.slice'
 
-type Layout = ChildrenProps & {
+type LayoutProps = ChildrenProps & {
   with100?: boolean
 }
 
-export default function Layout({ children, with100 = true }: Layout) {
+export default function Layout({ children, with100 = true }: LayoutProps) {
   return (
     <>
       <TopNavBar />
@@ -36,6 +39,12 @@ export default function Layout({ children, with100 = true }: Layout) {
 function TopNavBar() {
   const [isOpen, setIsOpen] = useState(false)
   const toggle = () => setIsOpen(!isOpen)
+  const { dispatch } = useApp()
+  const { studyAutomatic } = useSelector(selectConfigApp).configTrain
+
+  const handleAutomaticStudy = () => {
+    dispatch(setStudyAutomatic(!studyAutomatic))
+  }
 
   return (
     <Navbar color="info" light={true} expand="sm" fixed="top">
@@ -59,8 +68,9 @@ function TopNavBar() {
               {trans('label.mainMenu')}
             </DropdownToggle>
             <DropdownMenu end>
-              <DropdownItem>
-                <PlayIcon /> {trans('label.automaticStudy')}
+              <DropdownItem onClick={handleAutomaticStudy}>
+                {studyAutomatic ? <PauseIcon /> : <PlayIcon />}
+                {trans(studyAutomatic ? 'label.stopAutomaticStudy' : 'label.automaticStudy')}
               </DropdownItem>
               <DropdownItem divider />
               <DropdownItem>

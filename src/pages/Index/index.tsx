@@ -1,12 +1,18 @@
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, FormGroup, Input, Label } from 'reactstrap'
+import { Button, Fade, FormGroup, Input, Label } from 'reactstrap'
 import Loading from '../../components/Loading'
 import { trans } from '../../config/i18n'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import Layout from '../../layouts/Layout'
 import { getWords } from '../../redux/actions'
-import { selectConfigApp, setStudyAutomatic, setStudyEnglishToSpanish, setStudyRandomMode } from '../../redux/config.slice'
+import {
+  selectConfigApp,
+  setChangeVelocityAutomatic,
+  setStudyAutomatic,
+  setStudyEnglishToSpanish,
+  setStudyRandomMode
+} from '../../redux/config.slice'
 import { showMsgError } from '../../utils/helpers'
 
 export default function Index() {
@@ -23,6 +29,10 @@ export default function Index() {
       showMsgError('error.firebaseError')
     }
     setisUpdateWordsLoading(false)
+  }
+
+  const handleChangeVAutomatic = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(setChangeVelocityAutomatic(parseInt(e.target.value)))
   }
 
   return (
@@ -47,10 +57,32 @@ export default function Index() {
               <Input type="switch" checked={configTrain.studyAutomatic} readOnly />
               <Label check>{trans('label.automaticLearn')}</Label>
             </FormGroup>
-            <Link className="w-250px mt-5 btn btn-primary btn-lg" to="training" color="primary">
+
+            {configTrain.studyAutomatic && (
+              <Fade>
+                <FormGroup className="mt-2">
+                  <Label check>{trans('label.velocityAutomatic')}</Label>
+                  <Input
+                    bsSize="sm"
+                    type="select"
+                    className="selectVAutomatic"
+                    defaultValue={configTrain.velocityStudyAutomatic}
+                    onChange={handleChangeVAutomatic}
+                  >
+                    <option value={1}>1</option>
+                    <option value={2}>2+</option>
+                    <option value={3}>3+</option>
+                    <option value={4}>4+</option>
+                    <option value={5}>5+</option>
+                  </Input>
+                </FormGroup>
+              </Fade>
+            )}
+
+            <Link className="w-250px mt-4 btn btn-primary btn-lg" to="training" color="primary">
               {trans('label.startTraining')}
             </Link>
-            <Button onClick={handleUpdateWords} className="w-250px mt-5 text-light" size="lg" color="info" disabled={isUpdateWordsLoading}>
+            <Button onClick={handleUpdateWords} className="w-250px mt-4 text-light" size="lg" color="info" disabled={isUpdateWordsLoading}>
               {isUpdateWordsLoading ? <Loading size="22" /> : trans('label.updateWords')}
             </Button>
             {words && `${trans('label.totalWords')} ${words.length}`}

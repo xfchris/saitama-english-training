@@ -8,3 +8,5 @@ export const categories = [
     name: 'Solo palabras'
   }
 ]
+
+export const MAX_PROGRESS_PERCENT = 120
