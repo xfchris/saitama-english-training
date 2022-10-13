@@ -7,8 +7,8 @@
     "dev": "env-cmd -e Dev vite --host",
     "build": "tsc && env-cmd -e Dev vite build",
     "build:pro": "tsc && vite build",
-    "test": "env-cmd -e Test vitest",
-    "coverage": "env-cmd -e Test vitest run --coverage",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
     "lint": "eslint src --ext .ts,.tsx,.js",
     "lint:fix": "eslint src --ext .ts,.tsx,.js --fix",
     "preview": "vite preview"
