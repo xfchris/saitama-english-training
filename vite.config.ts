@@ -15,6 +15,7 @@ export default defineConfig({
         name: 'English Training',
         short_name: 'S-E-TRAINING',
         description: 'Learning english with saitama method',
+        orientation: 'portrait',
         theme_color: '#ffffff',
         icons: [
           {

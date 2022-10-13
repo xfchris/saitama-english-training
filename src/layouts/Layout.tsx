@@ -1,5 +1,5 @@
 import { ChildrenProps } from '../types/config'
-import { Collapse, Navbar, NavbarToggler, Nav, NavItem, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
+import { Collapse, Navbar, NavbarToggler, Nav, NavItem, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Fade } from 'reactstrap'
 import { useState } from 'react'
 import logoImg from '../assets/img/saitama-logo.webp'
 import { Link } from 'react-router-dom'
@@ -24,13 +24,13 @@ export default function Layout({ children, with100 = true }: LayoutProps) {
           'mt-60px': !with100
         })}
       >
-        <div
+        <Fade
           className={classNames({
             'h-92 w-100 d-flex': with100
           })}
         >
           {children}
-        </div>
+        </Fade>
       </div>
     </>
   )

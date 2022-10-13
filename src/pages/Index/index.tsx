@@ -36,23 +36,23 @@ export default function Index() {
 
   return (
     <Layout>
-      <div className="w-100 d-flex flex-column">
+      <div className="w-100 d-flex flex-column justify-content-center">
         <div className="w-100 py-3 px-4">
           <div className="text-center mb-4">
             <h2 className="">{trans('label.textLogoLarge')}</h2>
             <p className="">{trans('label.textLogoLargeSlogan')}</p>
-            <img src="/icon.png" />
+            <img className="my-2" src="/icon.png" />
           </div>
           <div className="d-flex flex-column align-items-center">
-            <FormGroup switch onClick={() => dispatch(setStudyEnglishToSpanish(!configTrain.studyEnglishToSpanish))}>
+            <FormGroup className="mt-2" switch onClick={() => dispatch(setStudyEnglishToSpanish(!configTrain.studyEnglishToSpanish))}>
               <Input type="switch" checked={configTrain.studyEnglishToSpanish} readOnly />
               <Label check>{trans('label.learnEnglishToSpanish')}</Label>
             </FormGroup>
-            <FormGroup switch onClick={() => dispatch(setStudyRandomMode(!configTrain.studyRandomMode))}>
+            <FormGroup className="mt-2" switch onClick={() => dispatch(setStudyRandomMode(!configTrain.studyRandomMode))}>
               <Input type="switch" checked={configTrain.studyRandomMode} readOnly />
               <Label check>{trans('label.randomMode')}</Label>
             </FormGroup>
-            <FormGroup switch onClick={() => dispatch(setStudyAutomatic(!configTrain.studyAutomatic))}>
+            <FormGroup className="mt-2" switch onClick={() => dispatch(setStudyAutomatic(!configTrain.studyAutomatic))}>
               <Input type="switch" checked={configTrain.studyAutomatic} readOnly />
               <Label check>{trans('label.automaticLearn')}</Label>
             </FormGroup>
@@ -78,7 +78,7 @@ export default function Index() {
               </Fade>
             )}
 
-            <Link className="w-250px mt-4 btn btn-primary btn-lg" to="training" color="primary">
+            <Link className="w-250px mt-5 btn btn-primary btn-lg" to="training" color="primary">
               {trans('label.startTraining')}
             </Link>
             <Button onClick={handleUpdateWords} className="w-250px mt-4 text-light" size="lg" color="info" disabled={isUpdateWordsLoading}>
