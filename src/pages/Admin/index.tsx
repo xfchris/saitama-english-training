@@ -22,9 +22,7 @@ export default function Admin() {
         <TitleH1 title={trans('label.wordsManage')} />
         <Row className="my-4">
           <Col sm={8}>
-            <Card className="rounded-0 mb-3">
-              <WordsDataTable setIdForUpdate={setIdForUpdate} />
-            </Card>
+            <WordsDataTable setIdForUpdate={setIdForUpdate} />
           </Col>
 
           <Col sm={4}>

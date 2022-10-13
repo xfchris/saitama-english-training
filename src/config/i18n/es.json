@@ -34,7 +34,8 @@
     "completed": "Completado",
     "selectStartWord": "Selecciona desde donde quieres comenzar a estudiar",  
     "stopAutomaticStudy": "Pausar s. automático",
-    "velocityAutomatic": "Velocidad del paso de las palabras"
+    "velocityAutomatic": "Velocidad del paso de las palabras",
+    "noRecords": "No hay registros"
   },
   "button": {
     "login": "Iniciar sesión",

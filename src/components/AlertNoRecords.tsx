@@ -7,7 +7,7 @@ type AlertNoRecordsProps = {
 
 export default function AlertNoRecords({ title }: AlertNoRecordsProps) {
   return (
-    <Alert color="primary">
+    <Alert className="py-2" color="primary">
       <div className="alert-body">
         <span>{trans(title)}</span>
       </div>

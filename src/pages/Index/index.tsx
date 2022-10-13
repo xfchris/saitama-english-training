@@ -36,7 +36,7 @@ export default function Index() {
 
   return (
     <Layout>
-      <div className="w-100 d-flex flex-column justify-content-center">
+      <div className="w-100 d-flex flex-column pt-3">
         <div className="w-100 py-3 px-4">
           <div className="text-center mb-4">
             <h2 className="">{trans('label.textLogoLarge')}</h2>

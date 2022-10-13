@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { trans } from '../config/i18n'
 import AlertNoRecords from './AlertNoRecords'
 import DataTable, { TableStyles } from 'react-data-table-component'
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
+import { Card, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
 import { Dispatch, SetStateAction } from 'react'
 import { Word } from '../types/config'
 import { useAppDispatch, useAppSelector } from '../hooks'
@@ -83,7 +83,7 @@ export function WordsDataTable({ setIdForUpdate }: WordsDataTableProps) {
   ]
 
   return (
-    <div className="react-dataTable react-dataTable-body-transparent">
+    <Card className="rounded-0 mb-3 react-dataTable react-dataTable-body-transparent">
       <DataTable
         pagination
         data={words}
@@ -94,7 +94,7 @@ export function WordsDataTable({ setIdForUpdate }: WordsDataTableProps) {
         defaultSortAsc={false}
         defaultSortFieldId="id"
       />
-    </div>
+    </Card>
   )
 }
 
