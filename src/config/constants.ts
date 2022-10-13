@@ -6,6 +6,10 @@ export const categories = [
   {
     id: '2',
     name: 'Solo palabras'
+  },
+  {
+    id: '3',
+    name: 'Otro tipo de oraciones'
   }
 ]
 

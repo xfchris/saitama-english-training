@@ -25,7 +25,6 @@ export default function Index() {
     try {
       await dispatch(getWords())
     } catch (error) {
-      console.log(error)
       showMsgError('error.firebaseError')
     }
     setisUpdateWordsLoading(false)

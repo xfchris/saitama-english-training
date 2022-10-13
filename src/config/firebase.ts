@@ -11,6 +11,6 @@ const firebaseConfig = {
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET
 }
 
-const app = initializeApp(firebaseConfig)
-export const auth = getAuth(app)
+const firebaseApp = initializeApp(firebaseConfig)
+export const auth = getAuth(firebaseApp)
 export const db = getFirestore()

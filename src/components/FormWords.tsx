@@ -46,8 +46,6 @@ export default function FormWords({ idForUpdate, setIdForUpdate }: FormWordsProp
   const dispatch = useAppDispatch()
   const { words } = useAppSelector(selectConfigApp)
 
-  console.log(errors)
-
   const onSubmit = async (word: Partial<Word>) => {
     try {
       setIsLoading(true)
@@ -55,7 +53,6 @@ export default function FormWords({ idForUpdate, setIdForUpdate }: FormWordsProp
       handleNewWord()
       dispatch(getWords())
     } catch (error) {
-      console.log(error)
       showMsgError('error.firebaseError')
     }
     setIsLoading(false)

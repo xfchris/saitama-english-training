@@ -9,7 +9,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   plugins: [
     VitePWA({
-      includeAssets: ['icon.png', 'apple-touch-icon.png', 'masked-icon.svg'],
+      registerType: 'autoUpdate',
+      includeAssets: ['icon.png', 'saitama-icon.png', 'icon-180x180.png', 'icon-apple-touch.svg'],
       manifest: {
         name: 'English Training',
         short_name: 'S-E-TRAINING',
@@ -17,19 +18,19 @@ export default defineConfig({
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'pwa-192x192.png',
+            src: 'icon-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'pwa-512x512.png',
+            src: 'icon-512x512.png',
             sizes: '512x512',
             type: 'image/png'
           }
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html}', '**/*.{svg,png,jpg,gif}']
+        globPatterns: ['**/*.{js,css,html}', '**/*.{svg,png,jpg,jpeg,gif}']
       }
     }),
     react()
