@@ -34,7 +34,7 @@ jobs:
       - name: Prepare paths for SonarQube analysis
         run: |
           sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" coverage/lcov.info
-
+          
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
