@@ -3,7 +3,7 @@ import { Collapse, Navbar, NavbarToggler, Nav, NavItem, UncontrolledDropdown, Dr
 import { useState } from 'react'
 import logoImg from '../assets/img/saitama-logo.webp'
 import { Link } from 'react-router-dom'
-import { trans } from '../config/i18n'
+import { changeToogleLanguage, trans } from '../config/i18n'
 import { TogglesIcon, PlayIcon, PauseIcon } from '../components/Icons'
 import classNames from 'classnames'
 import { useApp } from '../providers/AppProvider'
@@ -73,7 +73,7 @@ function TopNavBar() {
                 {trans(studyAutomatic ? 'label.stopAutomaticStudy' : 'label.automaticStudy')}
               </DropdownItem>
               <DropdownItem divider />
-              <DropdownItem>
+              <DropdownItem onClick={() => changeToogleLanguage()}>
                 <TogglesIcon /> {trans('label.languageToggle')}
               </DropdownItem>
             </DropdownMenu>

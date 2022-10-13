@@ -1,0 +1,62 @@
+{
+  "label": {
+    "options": "Ops",
+    "edit": "Edit",
+    "remove": "Remove",
+    "logoTextBar": "S-E-TRAINING",
+    "mainMenu": "Main menu",
+    "automaticStudy": "Automatic study",
+    "languageToggle": "Change language",
+    "removeDailyProgress": "Remove progress",
+    "admin": "Admin",
+    "totalWords": "Total words:",
+    "learnEnglishToSpanish": "Learn from english to spanish",
+    "textLogoLarge": "SAITAMA ENGLISH TRAINING",
+    "textLogoLargeSlogan": "Improve your English by repeating more than 1000 sentences every day",
+    "randomMode": "Practice in random mode",
+    "automaticLearn": "Automatically pass words",
+    "startTraining": "Start training",
+    "updateWords": "Update words",
+    "loginAdmin": "Login admin",
+    "email": "Email",
+    "password": "Password",
+    "nStudiesToday": "N. studied:",
+    "addWord": "Add phrase",
+    "editWord": "Edit phrase",
+    "englishWord": "Phrase in english",
+    "spanishWord": "Phrase in spanish",
+    "english": "English",
+    "spanish": "Spanish",
+    "wordsManage": "Words manage",
+    "id": "id",
+    "categories": "Categories",
+    "confirm": "Are you sure you want to continue?",
+    "completed": "Completed",
+    "selectStartWord": "Select from where you want to start studying",  
+    "stopAutomaticStudy": "Pause s. automatic",
+    "velocityAutomatic": "Speed of passage of words",
+    "noRecords": "No records"
+  },
+  "button": {
+    "login": "Login",
+    "result": "Result",
+    "soundPlay": "Play sound",
+    "back": "Back",
+    "newWord": "New phrase",
+    "saveWord": "Save phrase",
+    "logout": "Logout",
+    "cancel": "Cancel",
+    "accept": "Acept",
+    "continue": "Continue",
+    "next": "Next",
+    "removeStudiedWords": "Remove studied words"
+  },
+  "error": {
+    "invalidLogin": "Incorrect email or password",
+    "firebaseError": "Error in firebase service",
+    "wordNotExist": "Word not exist"
+  },
+  "info": {
+    "allWordsStudied": "Congratulations! you finished studying all the words."
+  }
+}

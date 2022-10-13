@@ -2,9 +2,9 @@ import { ChangeEvent, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Fade, FormGroup, Input, Label } from 'reactstrap'
 import Loading from '../../components/Loading'
-import { trans } from '../../config/i18n'
-import { useAppDispatch, useAppSelector } from '../../hooks'
 import Layout from '../../layouts/Layout'
+import { trans } from '../../config/i18n'
+import { useAppSelector } from '../../hooks'
 import { getWords } from '../../redux/actions'
 import {
   selectConfigApp,
@@ -14,9 +14,10 @@ import {
   setStudyRandomMode
 } from '../../redux/config.slice'
 import { showMsgError } from '../../utils/helpers'
+import { useApp } from '../../providers/AppProvider'
 
 export default function Index() {
-  const dispatch = useAppDispatch()
+  const { dispatch } = useApp()
   const [isUpdateWordsLoading, setisUpdateWordsLoading] = useState(false)
   const { words, configTrain } = useAppSelector(selectConfigApp)
 
@@ -59,7 +60,7 @@ export default function Index() {
 
             {configTrain.studyAutomatic && (
               <Fade>
-                <FormGroup className="mt-2">
+                <div className="mt-2">
                   <Label check>{trans('label.velocityAutomatic')}</Label>
                   <Input
                     bsSize="sm"
@@ -74,7 +75,7 @@ export default function Index() {
                     <option value={4}>4+</option>
                     <option value={5}>5+</option>
                   </Input>
-                </FormGroup>
+                </div>
               </Fade>
             )}
 

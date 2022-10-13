@@ -1,4 +1,4 @@
-import { Card, Col, Container, Row } from 'reactstrap'
+import { Col, Container, Row } from 'reactstrap'
 import Layout from '../../layouts/Layout'
 import TitleH1 from '../../components/TitleH1'
 import FormWords from '../../components/FormWords'
