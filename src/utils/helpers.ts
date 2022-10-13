@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2'
 import { trans } from '../config/i18n'
 import { Word } from '../types/config'
+import sample from 'lodash.sample'
 
 export const showMsgError = (msg: string) => {
   return Swal.fire(trans(msg), undefined, 'error')
@@ -26,7 +27,7 @@ export const talkText = (msg: string, lang?: string) => {
     const u = new SpeechSynthesisUtterance(msg)
     u.lang = lang ?? 'en-US'
     u.rate = 1
-    u.pitch = 0.9
+    u.pitch = 1
     speechSynthesis.speak(u)
   } else {
     Swal.fire('Sorry', 'our browser does not support text to speech!')
@@ -36,7 +37,7 @@ export const talkText = (msg: string, lang?: string) => {
 export const getCurrentTimeStamp = () => new Date().getTime().toString().slice(0, -3)
 
 export const getItemRandArray = (array: any[]) => {
-  return array[Math.floor(Math.random() * array.length)]
+  return sample(array)
 }
 
 export const getWordNext = (wordsNotStudied: Word[], wordId: string | undefined) => {

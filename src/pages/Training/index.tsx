@@ -3,7 +3,6 @@ import TitleH1 from '../../components/TitleH1'
 import { trans } from '../../config/i18n'
 import Layout from '../../layouts/Layout'
 import classNames from 'classnames'
-import { Link } from 'react-router-dom'
 import { useAppSelector } from '../../hooks'
 import { selectConfigApp, setStudiedhashWords } from '../../redux/config.slice'
 import { useApp } from '../../providers/AppProvider'
@@ -37,9 +36,10 @@ export default function StartIn() {
 
 function AllWordsTable() {
   const { words, studiedHashWords } = useAppSelector(selectConfigApp)
+  const { navigate } = useApp()
 
   return (
-    <Table className="mb-4 border" bordered hover responsive size="sm">
+    <Table className="mb-4 border rounded" bordered hover responsive>
       <thead>
         <tr className="table-dark">
           <th className="w-5px">#</th>
@@ -51,19 +51,11 @@ function AllWordsTable() {
         {words.map((word, i) => {
           const studied = studiedHashWords?.includes(word.id)
           return (
-            <tr key={i} className={classNames({ 'table-success': studied })}>
+            <tr key={i} className={classNames({ 'table-success': studied })} onClick={() => navigate(`/training/${word._i}`)}>
               <th scope="row">{word._i}</th>
-              <td>
-                <Link className="text-decoration-none" to={`/training/${word._i}`}>
-                  {word.english}
-                </Link>
-              </td>
+              <td>{word.english}</td>
 
-              <td className="d-none d-sm-table-cell">
-                <Link className="text-decoration-none" to={`/training/${word._i}`}>
-                  {word.spanish}
-                </Link>
-              </td>
+              <td className="d-none d-sm-table-cell">{word.spanish}</td>
             </tr>
           )
         })}

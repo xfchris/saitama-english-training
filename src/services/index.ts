@@ -15,9 +15,9 @@ class DatabaseApi {
     return data.id
   }
 
-  static update = async (id: string, obj: DataType) => {
+  static update = (id: string, obj: DataType) => {
     const colRef = collection(db, this.collectionName)
-    return await updateDoc(doc(colRef, id), obj)
+    return updateDoc(doc(colRef, id), obj)
   }
 
   static createOrUpdate = async (id: string | null, obj: DataType) => {
@@ -43,6 +43,7 @@ export const firebaseApi = (collectionName: string) => {
 
 const getArrayFromCollection = (collection: any) => {
   return collection.docs.map((doc: any, i: number) => {
-    return { ...doc.data(), id: doc.id, _i: i + 1 }
+    const data = doc._staticData ?? doc.data()
+    return { ...data, id: doc.id, _i: i + 1 }
   })
 }

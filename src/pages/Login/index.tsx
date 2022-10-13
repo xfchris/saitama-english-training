@@ -77,7 +77,7 @@ export default function Login() {
                   />
                 </FormGroup>
 
-                <Button type="submit" className="mt-2 w-100" color="primary">
+                <Button type="submit" className="mt-2 w-100" color="primary" disabled={isLoginLoading}>
                   {isLoginLoading ? <Loading /> : trans('button.login')}
                 </Button>
               </Form>

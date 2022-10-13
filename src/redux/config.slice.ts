@@ -16,7 +16,8 @@ const initialState: InitialStateType = {
   configTrain: {
     studyEnglishToSpanish: true,
     studyRandomMode: false,
-    studyAutomatic: false
+    studyAutomatic: false,
+    velocityStudyAutomatic: 1
   },
   lang: 'es',
   studiedHashWords: []
@@ -43,6 +44,9 @@ const configApp = createSlice({
         state.studiedHashWords.push(action.payload)
       }
     },
+    setChangeVelocityAutomatic: (state: InitialStateType, action: PayloadAction<number>) => {
+      state.configTrain.velocityStudyAutomatic = action.payload
+    },
     setStudiedhashWords: (state: InitialStateType, action: PayloadAction<string[]>) => {
       state.studiedHashWords = action.payload
     },
@@ -57,8 +61,17 @@ const configApp = createSlice({
   }
 })
 
-export const { setLang, setStudyEnglishToSpanish, setStudyAutomatic, setStudyRandomMode, addStudiedWord, setStudiedhashWords, resetConfigApp } =
-  configApp.actions
+export const {
+  setLang,
+  setStudyEnglishToSpanish,
+  setChangeVelocityAutomatic,
+  setStudyAutomatic,
+  setStudyRandomMode,
+  addStudiedWord,
+  setStudiedhashWords,
+  resetConfigApp
+} = configApp.actions
+
 export const selectConfigApp = (state: RootState) => state.configApp
 
 export default configApp.reducer

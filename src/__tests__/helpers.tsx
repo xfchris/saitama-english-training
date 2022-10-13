@@ -1,9 +1,18 @@
 import { render } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { newMockXhr } from 'mock-xmlhttprequest'
+import { vi } from 'vitest'
 import App from '../App'
 
 export const JEST_TIMEOUT = 5000
+
+vi.mock('firebase/auth', () => ({
+  getAuth: () => ({
+    onAuthStateChanged: (fn: any) => {
+      fn({ id: 'Chris' })
+    }
+  })
+}))
 
 export function renderAppWithRoute(url?: string) {
   const history = createMemoryHistory()
