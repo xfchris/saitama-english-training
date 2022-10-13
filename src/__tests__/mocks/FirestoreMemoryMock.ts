@@ -1,5 +1,6 @@
 import { vi } from 'vitest'
 import { Word } from '../../types/config'
+import { v4 as uuid } from 'uuid'
 
 export const memoryDBFirebase: any = {}
 
@@ -41,14 +42,6 @@ vi.mock('firebase/firestore', () => ({
     return Promise.resolve(true)
   }
 }))
-
-function uuid() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    const r = (Math.random() * 16) | 0,
-      v = c === 'x' ? r : (r & 0x3) | 0x8
-    return v.toString(16)
-  })
-}
 
 export function fsMemoryAddDoc(table: string, obj: any) {
   const uniqueId = uuid()
