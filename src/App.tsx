@@ -13,13 +13,13 @@ import { useEffect } from 'react'
 function App({ location }: AppProps) {
   const { ready } = useTranslation()
 
-  if (!ready) {
-    return <SpinnerLogo />
-  }
-
   useEffect(() => {
     talkText('hi', 0.1)
   }, [])
+
+  if (!ready) {
+    return <SpinnerLogo />
+  }
 
   return (
     <Provider store={store}>
