@@ -35,7 +35,9 @@
     "selectStartWord": "Selecciona desde donde quieres comenzar a estudiar",  
     "stopAutomaticStudy": "Pausar s. automático",
     "velocityAutomatic": "Velocidad del paso de las palabras",
-    "noRecords": "No hay registros"
+    "noRecords": "No hay registros",
+    "aboutProject": "Sobre el proyecto",
+    "aboutDetails": "El objetivo de esta aplicación es dominar al 100% las frases más usadas del idioma ingles. <br /> <br /> Deseas contactarte con el autor?"
   },
   "button": {
     "login": "Iniciar sesión",

@@ -43,7 +43,6 @@ export const firebaseApi = (collectionName: string) => {
 
 const getArrayFromCollection = (collection: any) => {
   return collection.docs.map((doc: any, i: number) => {
-    const data = doc._staticData ?? doc.data()
-    return { ...data, id: doc.id, _i: i + 1 }
+    return { ...doc.data(), id: doc.id, _i: i + 1 }
   })
 }

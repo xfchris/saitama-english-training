@@ -35,7 +35,9 @@
     "selectStartWord": "Select from where you want to start studying",  
     "stopAutomaticStudy": "Pause s. automatic",
     "velocityAutomatic": "Speed of passage of words",
-    "noRecords": "No records"
+    "noRecords": "No records",
+    "aboutProject": "About",
+    "aboutDetails": "The objective of this application is to learn 100% the most used phrases of the English language. <br /> <br /> Do you want to contact the author?"
   },
   "button": {
     "login": "Login",
@@ -46,7 +48,7 @@
     "saveWord": "Save phrase",
     "logout": "Logout",
     "cancel": "Cancel",
-    "accept": "Acept",
+    "accept": "Accept",
     "continue": "Continue",
     "next": "Next",
     "removeStudiedWords": "Remove studied words"

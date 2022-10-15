@@ -1,4 +1,4 @@
-import Swal from 'sweetalert2'
+import Swal, { SweetAlertOptions } from 'sweetalert2'
 import { trans } from '../config/i18n'
 import { Word } from '../types/config'
 import sample from 'lodash.sample'
@@ -11,13 +11,14 @@ export const showMsgSuccess = (msg: string) => {
   return Swal.fire(trans(msg), undefined, 'success')
 }
 
-export const showMsgConfirm = (msg: string) => {
+export const showMsgConfirm = (msg: string, ops: SweetAlertOptions<any, any> = {}) => {
   return Swal.fire({
     title: trans(msg),
     icon: 'warning',
     showCancelButton: true,
     cancelButtonText: trans('button.cancel'),
-    confirmButtonText: trans('button.accept')
+    confirmButtonText: trans('button.accept'),
+    ...ops
   })
 }
 
