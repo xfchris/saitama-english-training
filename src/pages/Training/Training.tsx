@@ -15,9 +15,9 @@ export default function Training() {
   const {
     words,
     studiedHashWords,
-    configTrain: { studyRandomMode, studyEnglishToSpanish, studyAutomatic, velocityStudyAutomatic }
+    configTrain: { studyRandomMode, studyEnglishToSpanish, velocityStudyAutomatic }
   } = useAppSelector(selectConfigApp)
-  const { navigate, dispatch } = useApp()
+  const { navigate, dispatch, handleAutomaticStudy, studyAutomatic } = useApp()
   const [showResult, setShowResult] = useState(false)
   const [runAutomaticTime, setRunAutomaticTime] = useState(false)
   const [percentAutomaticBar, setPercentAutomaticBar] = useState(MAX_PROGRESS_PERCENT)
@@ -117,14 +117,14 @@ export default function Training() {
               </Fade>
             )}
 
-            <div className="w-100 d-flex h-80px">
-              <Button onClick={handleResult} className="w-100 rounded-0 border-0 text-btn-color" size="lg" color="primary">
+            <div className="w-100 d-flex h-60px">
+              <Button onClick={handleResult} className="w-100 rounded-0 border-0 text-btn-color" size="sm" color="primary">
                 {showResult ? trans('button.next') : trans('button.result')}
               </Button>
               <Button
                 onClick={readCurrentText}
                 className="w-100 rounded-0 border-0 border-start border-end text-btn-color border-light"
-                size="lg"
+                size="sm"
                 color="success"
               >
                 {trans('button.soundPlay')}
@@ -132,11 +132,19 @@ export default function Training() {
               <Button
                 onClick={handleBack}
                 className="w-100 rounded-0 border-0 text-btn-color"
-                size="lg"
+                size="sm"
                 color="danger"
                 disabled={!studiedHashWords.length}
               >
                 {trans('button.back')}
+              </Button>
+              <Button
+                onClick={handleAutomaticStudy}
+                className="w-100 rounded-0 border-start border-0 text-btn-color  text-light"
+                size="sm"
+                color="secondary"
+              >
+                {studyAutomatic ? trans('button.pause') : trans('button.play')}
               </Button>
             </div>
           </div>

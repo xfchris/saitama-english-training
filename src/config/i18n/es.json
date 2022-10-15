@@ -51,7 +51,9 @@
     "accept": "Aceptar",
     "continue": "Continuar",
     "next": "Siguiente",
-    "removeStudiedWords": "Borrar palabras estudiadas"
+    "removeStudiedWords": "Borrar palabras estudiadas",
+    "play": "Play",
+    "pause": "Pausar"
   },
   "error": {
     "invalidLogin": "Email o contraseña incorrecta",

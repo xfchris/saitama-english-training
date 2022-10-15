@@ -4,11 +4,9 @@ import { useState } from 'react'
 import logoImg from '../assets/img/saitama-logo.webp'
 import { Link } from 'react-router-dom'
 import { changeToogleLanguage, trans } from '../config/i18n'
-import { TogglesIcon, PlayIcon, PauseIcon, ChatHeartIcon } from '../components/Icons'
+import { TogglesIcon, ChatHeartIcon } from '../components/Icons'
 import classNames from 'classnames'
 import { useApp } from '../providers/AppProvider'
-import { useSelector } from 'react-redux'
-import { selectConfigApp, setStudyAutomatic } from '../redux/config.slice'
 import { showMsgConfirm } from '../utils/helpers'
 import { AUTHOR_URL } from '../config/constants'
 
@@ -41,12 +39,7 @@ export default function Layout({ children, with100 = true }: LayoutProps) {
 function TopNavBar() {
   const [isOpen, setIsOpen] = useState(false)
   const toggle = () => setIsOpen(!isOpen)
-  const { dispatch, signOut, user } = useApp()
-  const { studyAutomatic } = useSelector(selectConfigApp).configTrain
-
-  const handleAutomaticStudy = () => {
-    dispatch(setStudyAutomatic(!studyAutomatic))
-  }
+  const { signOut, user } = useApp()
 
   const handleAboutProject = () => {
     showMsgConfirm('label.aboutDetails', { icon: undefined }).then(r => {
@@ -78,10 +71,6 @@ function TopNavBar() {
               {trans('label.mainMenu')}
             </DropdownToggle>
             <DropdownMenu end>
-              <DropdownItem onClick={handleAutomaticStudy}>
-                {studyAutomatic ? <PauseIcon /> : <PlayIcon />}
-                {trans(studyAutomatic ? 'label.stopAutomaticStudy' : 'label.automaticStudy')}
-              </DropdownItem>
               <DropdownItem onClick={() => changeToogleLanguage()}>
                 <TogglesIcon /> {trans('label.languageToggle')}
               </DropdownItem>

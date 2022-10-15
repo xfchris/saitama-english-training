@@ -22,10 +22,11 @@ export const showMsgConfirm = (msg: string, ops: SweetAlertOptions<any, any> = {
   })
 }
 
-export const talkText = (msg: string, lang?: string) => {
+export const talkText = (msg: string, volume = 1, lang?: string) => {
   if ('speechSynthesis' in window) {
     speechSynthesis.cancel()
     const u = new SpeechSynthesisUtterance(msg)
+    u.volume = volume
     u.lang = lang ?? 'en-US'
     u.rate = 1
     u.pitch = 1

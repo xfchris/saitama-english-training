@@ -42,7 +42,7 @@
   "button": {
     "login": "Login",
     "result": "Result",
-    "soundPlay": "Play sound",
+    "soundPlay": "Listen",
     "back": "Back",
     "newWord": "New phrase",
     "saveWord": "Save phrase",
@@ -51,7 +51,9 @@
     "accept": "Accept",
     "continue": "Continue",
     "next": "Next",
-    "removeStudiedWords": "Remove studied words"
+    "removeStudiedWords": "Remove studied words",
+    "play": "Play",
+    "pause": "Pause"
   },
   "error": {
     "invalidLogin": "Incorrect email or password",

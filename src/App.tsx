@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './assets/scss/App.scss'
 import { useTranslation } from 'react-i18next'
 import SpinnerLogo from './components/SpinnerLogo'
+import { talkText } from './utils/helpers'
+import { useEffect } from 'react'
 
 function App({ location }: AppProps) {
   const { ready } = useTranslation()
@@ -14,6 +16,10 @@ function App({ location }: AppProps) {
   if (!ready) {
     return <SpinnerLogo />
   }
+
+  useEffect(() => {
+    talkText('hi', 0.1)
+  }, [])
 
   return (
     <Provider store={store}>

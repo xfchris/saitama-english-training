@@ -7,6 +7,8 @@ import { Auth, UserCredential, User, signInWithEmailAndPassword, signOut as sign
 import { auth } from '../config/firebase'
 import Swal from 'sweetalert2'
 import { trans } from '../config/i18n'
+import { selectConfigApp, setStudyAutomatic } from '../redux/config.slice'
+import { useSelector } from 'react-redux'
 
 interface IAppContext {
   user: User | null | undefined
@@ -14,7 +16,9 @@ interface IAppContext {
   navigate: NavigateFunction
   dispatch: AppDispatch
   signIn: (email: string, password: string) => Promise<UserCredential | void>
-  signOut(): Promise<void>
+  signOut: () => Promise<void>
+  handleAutomaticStudy: () => void
+  studyAutomatic: boolean
 }
 const AppContext = createContext<IAppContext | null>(null)
 
@@ -22,6 +26,7 @@ export function AppProvider({ children }: ChildrenProps) {
   const [user, setUser] = useState<User | null | undefined>(undefined)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const { studyAutomatic } = useSelector(selectConfigApp).configTrain
 
   function signIn(email: string, password: string): Promise<UserCredential | void> {
     return signInWithEmailAndPassword(auth, email, password).catch(() => {
@@ -31,6 +36,10 @@ export function AppProvider({ children }: ChildrenProps) {
 
   function signOut() {
     return signOutFirebase(auth)
+  }
+
+  const handleAutomaticStudy = () => {
+    dispatch(setStudyAutomatic(!studyAutomatic))
   }
 
   useEffect(() => {
@@ -46,6 +55,8 @@ export function AppProvider({ children }: ChildrenProps) {
     dispatch,
     signIn,
     signOut,
+    handleAutomaticStudy,
+    studyAutomatic,
     auth
   }
   return <AppContext.Provider value={providerValue}>{children}</AppContext.Provider>
