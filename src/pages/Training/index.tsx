@@ -35,7 +35,11 @@ export default function StartIn() {
 }
 
 function AllWordsTable() {
-  const { words, studiedHashWords } = useAppSelector(selectConfigApp)
+  const {
+    words,
+    studiedHashWords,
+    configTrain: { studyEnglishToSpanish }
+  } = useAppSelector(selectConfigApp)
   const { navigate } = useApp()
 
   return (
@@ -43,8 +47,8 @@ function AllWordsTable() {
       <thead>
         <tr className="table-dark">
           <th className="w-5px">#</th>
-          <th>{trans('label.english')}</th>
-          <th className="w-50 d-none d-sm-table-cell">{trans('label.spanish')}</th>
+          <th>{studyEnglishToSpanish ? trans('label.english') : trans('label.spanish')}</th>
+          <th className="w-50 d-none d-sm-table-cell">{studyEnglishToSpanish ? trans('label.spanish') : trans('label.english')}</th>
         </tr>
       </thead>
       <tbody>
@@ -53,9 +57,9 @@ function AllWordsTable() {
           return (
             <tr key={i} className={classNames({ 'table-success': studied })} onClick={() => navigate(`/training/${word._i}`)}>
               <th scope="row">{word._i}</th>
-              <td>{word.english}</td>
+              <td>{studyEnglishToSpanish ? word.english : word.spanish}</td>
 
-              <td className="d-none d-sm-table-cell">{word.spanish}</td>
+              <td className="d-none d-sm-table-cell">{studyEnglishToSpanish ? word.spanish : word.english}</td>
             </tr>
           )
         })}

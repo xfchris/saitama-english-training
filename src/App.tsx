@@ -14,7 +14,7 @@ function App({ location }: AppProps) {
   const { ready } = useTranslation()
 
   useEffect(() => {
-    talkText('hi', 0.1)
+    talkText('hi', 0.001)
   }, [])
 
   if (!ready) {
