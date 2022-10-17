@@ -3,21 +3,17 @@ import { trans } from '../config/i18n'
 import AlertNoRecords from './AlertNoRecords'
 import DataTable, { TableStyles } from 'react-data-table-component'
 import { Card, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
-import { Dispatch, SetStateAction } from 'react'
 import { Word } from '../types/config'
-import { useAppDispatch, useAppSelector } from '../hooks'
+import { useAppSelector } from '../hooks'
 import { selectConfigApp } from '../redux/config.slice'
 import { firebaseApi } from '../services'
-import { showMsgConfirm, showMsgError, showMsgSuccess } from '../utils/helpers'
+import { showMsgConfirm, showMsgError, showMsgSuccess, HTMLReactRender } from '../utils/helpers'
 import { getWords } from '../redux/actions'
+import { useApp } from '../providers/AppProvider'
 
-type WordsDataTableProps = {
-  setIdForUpdate: Dispatch<SetStateAction<string | null>>
-}
-
-export function WordsDataTable({ setIdForUpdate }: WordsDataTableProps) {
+export function WordsDataTable() {
   const { words } = useAppSelector(selectConfigApp)
-  const dispatch = useAppDispatch()
+  const { navigate, dispatch } = useApp()
 
   if (!words || !words.length) {
     return <AlertNoRecords title="label.noRecords" />
@@ -56,12 +52,14 @@ export function WordsDataTable({ setIdForUpdate }: WordsDataTableProps) {
     {
       name: trans('label.english'),
       sortable: true,
-      selector: (row: Word) => row.english
+      selector: (row: Word) => row.english,
+      cell: (row: Word) => <>{HTMLReactRender(row.englishHtml)}</>
     },
     {
       name: trans('label.spanish'),
       sortable: true,
-      selector: (row: Word) => row.spanish
+      selector: (row: Word) => row.spanish,
+      cell: (row: Word) => <>{HTMLReactRender(row.spanishHtml)}</>
     },
     {
       sortable: false,
@@ -72,7 +70,7 @@ export function WordsDataTable({ setIdForUpdate }: WordsDataTableProps) {
             <UncontrolledDropdown size="sm">
               <DropdownToggle caret>{trans('label.options')}</DropdownToggle>
               <DropdownMenu>
-                <DropdownItem onClick={() => setIdForUpdate(row.id)}>{trans('label.edit')}</DropdownItem>
+                <DropdownItem onClick={() => navigate(`/admin/words/${row.id}`)}>{trans('label.edit')}</DropdownItem>
                 <DropdownItem onClick={() => removeWord(row.id)}>{trans('label.remove')}</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

@@ -17,6 +17,10 @@ const routes = [
     element: <Admin />
   },
   {
+    path: '/admin/words/:idHash',
+    element: <Admin />
+  },
+  {
     path: '/training',
     element: <StartIn />
   },

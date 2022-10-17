@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Badge, Button, Fade, Progress } from 'reactstrap'
 import { useInterval } from 'usehooks-ts'
 import { MAX_PROGRESS_PERCENT } from '../../config/constants'
@@ -8,7 +8,7 @@ import { useAppSelector } from '../../hooks'
 import Layout from '../../layouts/Layout'
 import { useApp } from '../../providers/AppProvider'
 import { addStudiedWord, selectConfigApp, setStudiedhashWords } from '../../redux/config.slice'
-import { getItemRandArray, getWordNext, showMsgError, showMsgSuccess, talkText } from '../../utils/helpers'
+import { changeLnToPointer, getItemRandArray, getWordNext, HTMLReactRender, showMsgError, showMsgSuccess, talkText } from '../../utils/helpers'
 
 export default function Training() {
   const { wordId } = useParams()
@@ -17,7 +17,7 @@ export default function Training() {
     studiedHashWords,
     configTrain: { studyRandomMode, studyEnglishToSpanish, velocityStudyAutomatic }
   } = useAppSelector(selectConfigApp)
-  const { navigate, dispatch, handleAutomaticStudy, studyAutomatic } = useApp()
+  const { navigate, dispatch, handleAutomaticStudy, studyAutomatic, user } = useApp()
   const [showResult, setShowResult] = useState(false)
   const [runAutomaticTime, setRunAutomaticTime] = useState(false)
   const [percentAutomaticBar, setPercentAutomaticBar] = useState(MAX_PROGRESS_PERCENT)
@@ -43,12 +43,12 @@ export default function Training() {
   }, [studyAutomatic])
 
   if (!word) {
-    showMsgError('error.wordNotExist').then(() => navigate('/training'))
+    showMsgError('error.wordNotExist').then(() => navigate('/training', { replace: true }))
     return null
   }
 
   const readCurrentText = () => {
-    talkText(word.english)
+    talkText(changeLnToPointer(word.english))
   }
 
   const handleResult = () => {
@@ -65,12 +65,12 @@ export default function Training() {
         showMsgSuccess('info.allWordsStudied').then(() => {
           dispatch(setStudiedhashWords([]))
           setShowResult(false)
-          navigate('/')
+          navigate('/', { replace: true })
         })
       } else {
         const nextWord = studyRandomMode ? getItemRandArray(wordsNotStudied) : getWordNext(wordsNotStudied, wordId)
         setShowResult(false)
-        navigate(`/training/${nextWord._i}`)
+        navigate(`/training/${nextWord._i}`, { replace: true })
       }
     }
   }
@@ -79,32 +79,43 @@ export default function Training() {
     setShowResult(false)
     const studiedHashWordsFiltered = studiedHashWords.filter(hash => hash !== word.id)
     if (!studiedHashWordsFiltered) {
-      navigate('/training/1')
+      navigate('/training/1', { replace: true })
     } else {
       const backHash = studiedHashWordsFiltered.pop()
       const backWord = words.find(wordSelected => wordSelected.id === backHash)
       dispatch(setStudiedhashWords(studiedHashWordsFiltered))
-      navigate(`/training/${backWord?._i || 1}`)
+      navigate(`/training/${backWord?._i || 1}`, { replace: true })
     }
   }
 
   return (
     <Layout>
       <div className="w-100 d-flex flex-column justify-content-between">
-        <div className="w-100 d-flex justify-content-between p-2">
-          <Badge># {wordId}</Badge>
-          <Badge>
-            {trans('label.nStudiesToday')} {studiedHashWords.length}
-          </Badge>
+        <div className="row m-1">
+          <div className="col-4">
+            <Badge># {wordId}</Badge>
+          </div>
+          <div className="col-4 text-center">
+            {user && (
+              <Link className="text-decoration-none" to={`/admin/words/${word.id}`}>
+                {trans('label.edit')}
+              </Link>
+            )}
+          </div>
+          <div className="col-4 text-end">
+            <Badge>
+              {trans('label.nStudiesToday')} {studiedHashWords.length}
+            </Badge>
+          </div>
         </div>
 
         <div className="w-100 text-center">
           <Fade>
-            <h3 className="mb-4">{studyEnglishToSpanish ? word.english : word.spanish}</h3>
+            <h3 className="mb-4">{HTMLReactRender(studyEnglishToSpanish ? word.englishHtml : word.spanishHtml)}</h3>
           </Fade>
           {showResult && (
             <Fade>
-              <h3 className="text-secondary">{studyEnglishToSpanish ? word.spanish : word.english}</h3>
+              <h3 className="text-secondary">{HTMLReactRender(studyEnglishToSpanish ? word.spanishHtml : word.englishHtml)}</h3>
             </Fade>
           )}
         </div>

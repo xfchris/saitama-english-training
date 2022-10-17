@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { useAppSelector } from '../../hooks'
 import { selectConfigApp, setStudiedhashWords } from '../../redux/config.slice'
 import { useApp } from '../../providers/AppProvider'
-import { showMsgConfirm } from '../../utils/helpers'
+import { HTMLReactRender, showMsgConfirm } from '../../utils/helpers'
 
 export default function StartIn() {
   const { dispatch } = useApp()
@@ -55,11 +55,10 @@ function AllWordsTable() {
         {words.map((word, i) => {
           const studied = studiedHashWords?.includes(word.id)
           return (
-            <tr key={i} className={classNames({ 'table-success': studied })} onClick={() => navigate(`/training/${word._i}`)}>
+            <tr key={i} className={classNames('pointer', { 'table-success': studied })} onClick={() => navigate(`/training/${word._i}`)}>
               <th scope="row">{word._i}</th>
-              <td>{studyEnglishToSpanish ? word.english : word.spanish}</td>
-
-              <td className="d-none d-sm-table-cell">{studyEnglishToSpanish ? word.spanish : word.english}</td>
+              <td>{HTMLReactRender(studyEnglishToSpanish ? word.englishHtml : word.spanishHtml)}</td>
+              <td className="d-none d-sm-table-cell">{HTMLReactRender(studyEnglishToSpanish ? word.spanishHtml : word.englishHtml)}</td>
             </tr>
           )
         })}

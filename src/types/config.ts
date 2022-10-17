@@ -19,4 +19,6 @@ export type Word = {
   english: string
   spanish: string
   createdAt: number
+  englishHtml?: string
+  spanishHtml?: string
 }

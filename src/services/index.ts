@@ -20,14 +20,13 @@ class DatabaseApi {
     return updateDoc(doc(colRef, id), obj)
   }
 
-  static createOrUpdate = async (id: string | null, obj: DataType) => {
+  static createOrUpdate = async (id: string | undefined, obj: DataType) => {
     return id ? this.update(id, obj) : this.create(obj)
   }
 
-  static getAll = async <T>() => {
+  static getAll = () => {
     const colRef = collection(db, this.collectionName)
-    const result = await getDocs(query(colRef, orderBy('createdAt', 'asc')))
-    return getArrayFromCollection(result) as T[]
+    return getDocs(query(colRef, orderBy('createdAt', 'asc')))
   }
 
   static remove = async (id: string) => {
@@ -39,10 +38,4 @@ class DatabaseApi {
 export const firebaseApi = (collectionName: string) => {
   DatabaseApi.collectionName = collectionName
   return DatabaseApi
-}
-
-const getArrayFromCollection = (collection: any) => {
-  return collection.docs.map((doc: any, i: number) => {
-    return { ...doc.data(), id: doc.id, _i: i + 1 }
-  })
 }

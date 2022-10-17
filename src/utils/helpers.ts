@@ -2,6 +2,7 @@ import Swal, { SweetAlertOptions } from 'sweetalert2'
 import { trans } from '../config/i18n'
 import { Word } from '../types/config'
 import sample from 'lodash.sample'
+import HTMLReactParser from 'html-react-parser'
 
 export const showMsgError = (msg: string) => {
   return Swal.fire(trans(msg), undefined, 'error')
@@ -44,4 +45,26 @@ export const getItemRandArray = (array: any[]) => {
 
 export const getWordNext = (wordsNotStudied: Word[], wordId: string | undefined) => {
   return wordsNotStudied?.find(wordSelected => wordSelected._i > parseInt(wordId || '1')) ?? wordsNotStudied[0]
+}
+
+export const changeLnToBr = (phrase: string) => {
+  return phrase.replace(/(?:\r\n|\r|\n)/g, '<br />')
+}
+
+export const changeLnToPointer = (phrase: string) => {
+  return phrase.replace(/(?:\r\n|\r|\n)/g, '. ')
+}
+
+export const getArrayFromCollection = <T>(collection: any) => {
+  return collection.docs.map((doc: any, i: number) => {
+    return { ...doc.data(), id: doc.id, _i: i + 1 }
+  }) as T[]
+}
+
+export const HTMLReactRender = (html: string | undefined) => {
+  return HTMLReactParser(html ?? '')
+}
+
+export const capitalizeFirstLetter = (text?: string) => {
+  return text ? text.charAt(0).toUpperCase() + text.slice(1) : undefined
 }
