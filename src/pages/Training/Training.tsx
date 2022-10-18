@@ -11,17 +11,21 @@ import { addStudiedWord, selectConfigApp, setStudiedhashWords } from '../../redu
 import { changeLnToPointer, getItemRandArray, getWordNext, HTMLReactRender, showMsgError, showMsgSuccess, talkText } from '../../utils/helpers'
 
 export default function Training() {
-  const { wordId } = useParams()
+  const { wordId, groupId } = useParams()
   const {
     words,
     studiedHashWords,
-    configTrain: { studyRandomMode, studyEnglishToSpanish, velocityStudyAutomatic }
+    configTrain: { studyRandomMode, studyEnglishToSpanish, velocityStudyAutomatic },
+    groupHashWords,
+    orderTypeEstablished
   } = useAppSelector(selectConfigApp)
   const { navigate, dispatch, handleAutomaticStudy, studyAutomatic, user } = useApp()
   const [showResult, setShowResult] = useState(false)
   const [runAutomaticTime, setRunAutomaticTime] = useState(false)
   const [percentAutomaticBar, setPercentAutomaticBar] = useState(MAX_PROGRESS_PERCENT)
   const word = wordId ? words.find(w => w._i === parseInt(wordId)) : undefined
+  const groupHashWordsSelected = groupHashWords[parseInt(groupId || '0')]
+  const groupWords = words.filter(word => groupHashWordsSelected.includes(word.id))
 
   useInterval(
     () => {
@@ -51,6 +55,26 @@ export default function Training() {
     talkText(changeLnToPointer(word.english))
   }
 
+  const handleNotWordsStudied = (studiedWords: string[]) => {
+    const wordStudiedOutGroup = studiedWords.reduce((out: string[], studiedWord) => {
+      if (!groupHashWordsSelected.includes(studiedWord)) {
+        out.push(studiedWord)
+      }
+      return out
+    }, [])
+    if (orderTypeEstablished !== 0) {
+      dispatch(setStudiedhashWords(wordStudiedOutGroup))
+      setShowResult(false)
+      navigate(`/training/group/${groupId}/word/${groupWords[0]._i}`, { replace: true })
+    } else {
+      showMsgSuccess('info.allWordsStudied').then(() => {
+        dispatch(setStudiedhashWords(wordStudiedOutGroup))
+        setShowResult(false)
+        navigate('/training', { replace: true })
+      })
+    }
+  }
+
   const handleResult = () => {
     if (!showResult) {
       readCurrentText()
@@ -58,19 +82,15 @@ export default function Training() {
       dispatch(addStudiedWord(word.id))
     } else {
       const studiedWords = [...studiedHashWords, word.id]
-      const wordsNotStudied = words?.filter(word => !studiedWords.includes(word.id))
+      const wordsNotStudied = groupWords?.filter(word => !studiedWords.includes(word.id))
 
       if (!wordsNotStudied?.length) {
         setRunAutomaticTime(false)
-        showMsgSuccess('info.allWordsStudied').then(() => {
-          dispatch(setStudiedhashWords([]))
-          setShowResult(false)
-          navigate('/', { replace: true })
-        })
+        handleNotWordsStudied(studiedWords)
       } else {
         const nextWord = studyRandomMode ? getItemRandArray(wordsNotStudied) : getWordNext(wordsNotStudied, wordId)
         setShowResult(false)
-        navigate(`/training/${nextWord._i}`, { replace: true })
+        navigate(`/training/group/${groupId}/word/${nextWord._i}`, { replace: true })
       }
     }
   }
@@ -79,12 +99,12 @@ export default function Training() {
     setShowResult(false)
     const studiedHashWordsFiltered = studiedHashWords.filter(hash => hash !== word.id)
     if (!studiedHashWordsFiltered) {
-      navigate('/training/1', { replace: true })
+      navigate('/training/group/0/word/1', { replace: true })
     } else {
       const backHash = studiedHashWordsFiltered.pop()
       const backWord = words.find(wordSelected => wordSelected.id === backHash)
       dispatch(setStudiedhashWords(studiedHashWordsFiltered))
-      navigate(`/training/${backWord?._i || 1}`, { replace: true })
+      navigate(`/training/group/${groupId}/word/${backWord?._i || 1}`, { replace: true })
     }
   }
 

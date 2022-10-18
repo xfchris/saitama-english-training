@@ -9,6 +9,8 @@ type InitialStateType = {
   configTrain: ConfigTrainType
   lang: LangType
   studiedHashWords: string[]
+  groupHashWords: string[][]
+  orderTypeEstablished: number
 }
 
 const initialState: InitialStateType = {
@@ -20,7 +22,9 @@ const initialState: InitialStateType = {
     velocityStudyAutomatic: 1
   },
   lang: 'es',
-  studiedHashWords: []
+  studiedHashWords: [],
+  groupHashWords: [],
+  orderTypeEstablished: 0
 }
 
 const configApp = createSlice({
@@ -47,8 +51,27 @@ const configApp = createSlice({
     setChangeVelocityAutomatic: (state: InitialStateType, action: PayloadAction<number>) => {
       state.configTrain.velocityStudyAutomatic = action.payload
     },
+    setOrderTypeEstablished: (state: InitialStateType, action: PayloadAction<number>) => {
+      state.orderTypeEstablished = action.payload
+    },
     setStudiedhashWords: (state: InitialStateType, action: PayloadAction<string[]>) => {
       state.studiedHashWords = action.payload
+    },
+    setGroupHashWords: (state: InitialStateType, action: PayloadAction<string[][]>) => {
+      state.groupHashWords = action.payload
+    },
+    setGroupHashWordsByNumberWords: (state: InitialStateType, action: PayloadAction<number>) => {
+      let groupIndex = -1
+      state.groupHashWords = state.words.reduce((out: string[][], word: Word, index: number) => {
+        if (index % action.payload === 0) {
+          groupIndex++
+        }
+        if (!out[groupIndex]) {
+          out[groupIndex] = []
+        }
+        out[groupIndex].push(word.id)
+        return out
+      }, [])
     },
     resetConfigApp: () => {
       return initialState
@@ -69,7 +92,10 @@ export const {
   setStudyRandomMode,
   addStudiedWord,
   setStudiedhashWords,
-  resetConfigApp
+  resetConfigApp,
+  setGroupHashWords,
+  setGroupHashWordsByNumberWords,
+  setOrderTypeEstablished
 } = configApp.actions
 
 export const selectConfigApp = (state: RootState) => state.configApp

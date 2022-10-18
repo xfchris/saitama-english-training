@@ -41,7 +41,7 @@ export function WordsDataTable() {
       sortable: true,
       selector: (row: Word) => row._i,
       cell: (row: Word) => {
-        const link = `/training/${row._i}`
+        const link = `/training/group/0/word/${row._i}`
         return (
           <Link className="text-decoration-none fw-bold text-danger" to={link} title={row.id}>
             {row._i}

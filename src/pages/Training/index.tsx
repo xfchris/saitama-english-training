@@ -1,15 +1,40 @@
-import { Button, Container, Table } from 'reactstrap'
+import { Button, Card, CardBody, Container, Table } from 'reactstrap'
 import TitleH1 from '../../components/TitleH1'
 import { trans } from '../../config/i18n'
 import Layout from '../../layouts/Layout'
 import classNames from 'classnames'
 import { useAppSelector } from '../../hooks'
-import { selectConfigApp, setStudiedhashWords } from '../../redux/config.slice'
+import { selectConfigApp, setGroupHashWordsByNumberWords, setOrderTypeEstablished, setStudiedhashWords } from '../../redux/config.slice'
 import { useApp } from '../../providers/AppProvider'
 import { HTMLReactRender, showMsgConfirm } from '../../utils/helpers'
+import { ChangeEvent } from 'react'
 
 export default function StartIn() {
+  const { groupHashWords } = useAppSelector(selectConfigApp)
+
+  return (
+    <Layout with100={false}>
+      <Container>
+        <TitleH1 title={trans('label.selectStartWord')} />
+        <div className="d-flex justify-content-center mb-3">
+          <TrainingOptions />
+        </div>
+        {groupHashWords.map((groupHash, i) => (
+          <div key={i}>
+            <h4>Grupo {i + 1}</h4>
+            <AllWordsTable hashWords={groupHash} groupIndex={i} />
+          </div>
+        ))}
+      </Container>
+    </Layout>
+  )
+}
+
+export function TrainingOptions() {
   const { dispatch } = useApp()
+  const { orderTypeEstablished } = useAppSelector(selectConfigApp)
+
+  const groupTypes = ['Todas las palabras', 'Grupos de 10 palabras', 'Grupos de 20 Palabras']
 
   const handleRemoveStudiedWords = () => {
     showMsgConfirm('label.confirm').then(response => {
@@ -19,22 +44,46 @@ export default function StartIn() {
     })
   }
 
+  const handleChangeGroupWords = (e: ChangeEvent<HTMLSelectElement>) => {
+    const value = parseInt(e.target.value)
+    dispatch(setOrderTypeEstablished(value))
+    const groupTypeNumberWords = [Infinity, 10, 20]
+    dispatch(setGroupHashWordsByNumberWords(groupTypeNumberWords[value]))
+  }
+
   return (
-    <Layout with100={false}>
-      <Container>
-        <TitleH1 title={trans('label.selectStartWord')} />
-        <div className="text-center mb-3">
-          <Button onClick={handleRemoveStudiedWords} size="sm">
-            {trans('button.removeStudiedWords')}
-          </Button>
+    <Card className="my-2 w-100 mw-650px">
+      <CardBody>
+        <div className="row">
+          <div className="col-sm-6">
+            <Button onClick={handleRemoveStudiedWords} size="sm" className="mb-3 mb-sm-0">
+              {trans('button.removeStudiedWords')}
+            </Button>
+          </div>
+          <div className="col-sm-6">
+            <div className="input-group input-group-sm">
+              <span className="input-group-text">Estudiar por</span>
+              <select className="form-select bg-light form-select-sm" value={orderTypeEstablished} onChange={handleChangeGroupWords}>
+                {groupTypes.map((groupName, key) => (
+                  <option key={key} value={key}>
+                    {groupName}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
-        <AllWordsTable />
-      </Container>
-    </Layout>
+      </CardBody>
+    </Card>
   )
 }
 
-function AllWordsTable() {
+type AllWordsTableType = {
+  hashWords: string[]
+  groupIndex: number
+}
+
+function AllWordsTable({ hashWords, groupIndex }: AllWordsTableType) {
   const {
     words,
     studiedHashWords,
@@ -52,16 +101,22 @@ function AllWordsTable() {
         </tr>
       </thead>
       <tbody>
-        {words.map((word, i) => {
-          const studied = studiedHashWords?.includes(word.id)
-          return (
-            <tr key={i} className={classNames('pointer', { 'table-success': studied })} onClick={() => navigate(`/training/${word._i}`)}>
-              <th scope="row">{word._i}</th>
-              <td>{HTMLReactRender(studyEnglishToSpanish ? word.englishHtml : word.spanishHtml)}</td>
-              <td className="d-none d-sm-table-cell">{HTMLReactRender(studyEnglishToSpanish ? word.spanishHtml : word.englishHtml)}</td>
-            </tr>
-          )
-        })}
+        {words
+          .filter(word => hashWords.includes(word.id))
+          .map((word, i) => {
+            const studied = studiedHashWords?.includes(word.id)
+            return (
+              <tr
+                key={i}
+                className={classNames('pointer', { 'table-success': studied })}
+                onClick={() => navigate(`/training/group/${groupIndex}/word/${word._i}`)}
+              >
+                <th scope="row">{word._i}</th>
+                <td>{HTMLReactRender(studyEnglishToSpanish ? word.englishHtml : word.spanishHtml)}</td>
+                <td className="d-none d-sm-table-cell">{HTMLReactRender(studyEnglishToSpanish ? word.spanishHtml : word.englishHtml)}</td>
+              </tr>
+            )
+          })}
       </tbody>
     </Table>
   )

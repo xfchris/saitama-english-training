@@ -25,7 +25,7 @@ const routes = [
     element: <StartIn />
   },
   {
-    path: '/training/:wordId',
+    path: '/training/group/:groupId/word/:wordId',
     element: <Training />
   },
   {

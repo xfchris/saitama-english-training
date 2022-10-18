@@ -11,7 +11,6 @@
   background-color: #8f6262;
 }
 
-
 @media (min-width: 768px) {
   .w-sm-50 {
     width: 50% !important;
@@ -39,7 +38,7 @@
 
 .w-5px {
   width: 5px;
-} 
+}
 
 .navbar-toggler {
   border: 0;
@@ -48,7 +47,7 @@
 
 .animation-progress-ms {
   .progress-bar {
-    transition: width   0.3s ease !important;
+    transition: width 0.3s ease !important;
   }
 }
 .selectVAutomatic {
@@ -61,4 +60,7 @@
 }
 .pointer {
   cursor: pointer;
+}
+.mx-650px {
+  max-width: 650px;
 }
