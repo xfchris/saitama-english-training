@@ -8,6 +8,7 @@ import { selectConfigApp, setGroupHashWordsByNumberWords, setOrderTypeEstablishe
 import { useApp } from '../../providers/AppProvider'
 import { HTMLReactRender, showMsgConfirm } from '../../utils/helpers'
 import { ChangeEvent } from 'react'
+import { GROUP_TYPES } from '../../config/constants'
 
 export default function StartIn() {
   const { groupHashWords } = useAppSelector(selectConfigApp)
@@ -33,8 +34,6 @@ export default function StartIn() {
 export function TrainingOptions() {
   const { dispatch } = useApp()
   const { orderTypeEstablished } = useAppSelector(selectConfigApp)
-
-  const groupTypes = ['Todas las palabras', 'Grupos de 10 palabras', 'Grupos de 20 Palabras']
 
   const handleRemoveStudiedWords = () => {
     showMsgConfirm('label.confirm').then(response => {
@@ -62,9 +61,9 @@ export function TrainingOptions() {
           </div>
           <div className="col-sm-6">
             <div className="input-group input-group-sm">
-              <span className="input-group-text">Estudiar por</span>
+              <span className="input-group-text">{trans('label.studyBy')}</span>
               <select className="form-select bg-light form-select-sm" value={orderTypeEstablished} onChange={handleChangeGroupWords}>
-                {groupTypes.map((groupName, key) => (
+                {GROUP_TYPES.map((groupName, key) => (
                   <option key={key} value={key}>
                     {groupName}
                   </option>
@@ -103,11 +102,11 @@ function AllWordsTable({ hashWords, groupIndex }: AllWordsTableType) {
       <tbody>
         {words
           .filter(word => hashWords.includes(word.id))
-          .map((word, i) => {
+          .map(word => {
             const studied = studiedHashWords?.includes(word.id)
             return (
               <tr
-                key={i}
+                key={word.id}
                 className={classNames('pointer', { 'table-success': studied })}
                 onClick={() => navigate(`/training/group/${groupIndex}/word/${word._i}`)}
               >

@@ -26,6 +26,7 @@ export default function Training() {
   const word = wordId ? words.find(w => w._i === parseInt(wordId)) : undefined
   const groupHashWordsSelected = groupHashWords[parseInt(groupId || '0')]
   const groupWords = words.filter(word => groupHashWordsSelected.includes(word.id))
+  const [groupWordsStudied, setGroupWordsStudied] = useState(groupWords.length)
 
   useInterval(
     () => {
@@ -37,7 +38,7 @@ export default function Training() {
         handleResult()
       }
     },
-    runAutomaticTime ? 30 : null
+    runAutomaticTime ? 90 : null
   )
 
   useEffect(() => {
@@ -45,6 +46,10 @@ export default function Training() {
       setRunAutomaticTime(studyAutomatic)
     }
   }, [studyAutomatic])
+
+  useEffect(() => {
+    getWordsNotStudied()
+  }, [])
 
   if (!word) {
     showMsgError('error.wordNotExist').then(() => navigate('/training', { replace: true }))
@@ -67,12 +72,19 @@ export default function Training() {
       setShowResult(false)
       navigate(`/training/group/${groupId}/word/${groupWords[0]._i}`, { replace: true })
     } else {
+      setRunAutomaticTime(false)
       showMsgSuccess('info.allWordsStudied').then(() => {
         dispatch(setStudiedhashWords(wordStudiedOutGroup))
         setShowResult(false)
         navigate('/training', { replace: true })
       })
     }
+  }
+
+  const getWordsNotStudied = () => {
+    const wordsNotStudied = groupWords?.filter(word => !studiedHashWords.includes(word.id))
+    setGroupWordsStudied(wordsNotStudied.length)
+    return wordsNotStudied
   }
 
   const handleResult = () => {
@@ -82,10 +94,8 @@ export default function Training() {
       dispatch(addStudiedWord(word.id))
     } else {
       const studiedWords = [...studiedHashWords, word.id]
-      const wordsNotStudied = groupWords?.filter(word => !studiedWords.includes(word.id))
-
+      const wordsNotStudied = getWordsNotStudied()
       if (!wordsNotStudied?.length) {
-        setRunAutomaticTime(false)
         handleNotWordsStudied(studiedWords)
       } else {
         const nextWord = studyRandomMode ? getItemRandArray(wordsNotStudied) : getWordNext(wordsNotStudied, wordId)
@@ -129,7 +139,7 @@ export default function Training() {
           </div>
         </div>
 
-        <div className="w-100 text-center">
+        <div className="w-100 text-center px-1">
           <Fade>
             <h3 className="mb-4">{HTMLReactRender(studyEnglishToSpanish ? word.englishHtml : word.spanishHtml)}</h3>
           </Fade>
@@ -144,10 +154,10 @@ export default function Training() {
           <div className="w-100 w-sm-50 d-flex flex-column">
             {studyAutomatic && (
               <Fade>
-                <Progress className="rounded-0 animation-progress-ms" color="warning" animated striped value={percentAutomaticBar} />
+                <Progress className="rounded-0 animation-progress-ms h-10px" color="warning" animated striped value={percentAutomaticBar} />
               </Fade>
             )}
-
+            <Progress max={groupWords.length} className="rounded-0 h-10px" color="primary" value={groupWords.length - groupWordsStudied} />
             <div className="w-100 d-flex h-60px">
               <Button onClick={handleResult} className="w-100 rounded-0 border-0 text-btn-color" size="sm" color="primary">
                 {showResult ? trans('button.next') : trans('button.result')}

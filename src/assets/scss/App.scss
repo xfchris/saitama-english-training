@@ -1,12 +1,15 @@
 .h-100vh {
   height: 100vh;
 }
+
 .h-92 {
   height: 92%;
 }
+
 .h-80px {
   height: 80px;
 }
+
 .text-btn-color {
   background-color: #8f6262;
 }
@@ -50,17 +53,25 @@
     transition: width 0.3s ease !important;
   }
 }
+
 .selectVAutomatic {
   width: 150px;
   margin: auto;
   margin-top: 10px !important;
 }
+
 .h-60px {
   height: 60px;
 }
+
 .pointer {
   cursor: pointer;
 }
+
 .mx-650px {
   max-width: 650px;
+}
+
+.h-10px {
+  height: 10px;
 }
