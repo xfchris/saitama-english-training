@@ -3,6 +3,18 @@ import { trans } from '../config/i18n'
 import { Word } from '../types/config'
 import sample from 'lodash.sample'
 import HTMLReactParser from 'html-react-parser'
+import NoSleep from 'nosleep.js'
+
+export const noSleep = new NoSleep()
+
+function enableNoSleep() {
+  noSleep.enable()
+  document.removeEventListener('touchstart', enableNoSleep, false)
+}
+
+export function blockScreenSleep() {
+  document.addEventListener('touchstart', enableNoSleep, false)
+}
 
 export const showMsgError = (msg: string) => {
   return Swal.fire(trans(msg), undefined, 'error')

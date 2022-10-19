@@ -8,7 +8,16 @@ import { useAppSelector } from '../../hooks'
 import Layout from '../../layouts/Layout'
 import { useApp } from '../../providers/AppProvider'
 import { addStudiedWord, selectConfigApp, setStudiedhashWords } from '../../redux/config.slice'
-import { changeLnToPointer, getItemRandArray, getWordNext, HTMLReactRender, showMsgError, showMsgSuccess, talkText } from '../../utils/helpers'
+import {
+  changeLnToPointer,
+  getItemRandArray,
+  getWordNext,
+  HTMLReactRender,
+  noSleep,
+  showMsgError,
+  showMsgSuccess,
+  talkText
+} from '../../utils/helpers'
 
 export default function Training() {
   const { wordId, groupId } = useParams()
@@ -49,6 +58,9 @@ export default function Training() {
 
   useEffect(() => {
     getWordsNotStudied()
+    return () => {
+      noSleep.disable()
+    }
   }, [])
 
   if (!word) {

@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { useAppSelector } from '../../hooks'
 import { selectConfigApp, setGroupHashWordsByNumberWords, setOrderTypeEstablished, setStudiedhashWords } from '../../redux/config.slice'
 import { useApp } from '../../providers/AppProvider'
-import { HTMLReactRender, showMsgConfirm } from '../../utils/helpers'
+import { blockScreenSleep, HTMLReactRender, showMsgConfirm } from '../../utils/helpers'
 import { ChangeEvent } from 'react'
 import { GROUP_TYPES } from '../../config/constants'
 
@@ -108,7 +108,10 @@ function AllWordsTable({ hashWords, groupIndex }: AllWordsTableType) {
               <tr
                 key={word.id}
                 className={classNames('pointer', { 'table-success': studied })}
-                onClick={() => navigate(`/training/group/${groupIndex}/word/${word._i}`)}
+                onClick={() => {
+                  navigate(`/training/group/${groupIndex}/word/${word._i}`)
+                  blockScreenSleep()
+                }}
               >
                 <th scope="row">{word._i}</th>
                 <td>{HTMLReactRender(studyEnglishToSpanish ? word.englishHtml : word.spanishHtml)}</td>
