@@ -5,10 +5,12 @@ import { memoryDBFirebase } from '../../mocks/FirestoreMemoryMock'
 import { renderAppWithRoute } from '../../helpers'
 import store from '../../../redux/store'
 import { getWords } from '../../../redux/actions'
+import { setGroupHashWordsByNumberWords } from '../../../redux/config.slice'
 
 describe('Training', () => {
   beforeAll(async () => {
     await store.dispatch(getWords())
+    await store.dispatch(setGroupHashWordsByNumberWords(10))
   })
 
   it('should render training page', () => {

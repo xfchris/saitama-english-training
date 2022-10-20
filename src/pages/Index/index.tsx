@@ -1,6 +1,6 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Fade, FormGroup, Input, Label } from 'reactstrap'
+import { Fade, FormGroup, Input, Label } from 'reactstrap'
 import Loading from '../../components/Loading'
 import Layout from '../../layouts/Layout'
 import { trans } from '../../config/i18n'
@@ -17,14 +17,14 @@ import { showMsgError } from '../../utils/helpers'
 import { useApp } from '../../providers/AppProvider'
 
 export default function Index() {
-  const { dispatch } = useApp()
-  const [isUpdateWordsLoading, setisUpdateWordsLoading] = useState(false)
-  const { words, configTrain } = useAppSelector(selectConfigApp)
+  const { dispatch, handleGroupWords } = useApp()
+  const [isUpdateWordsLoading, setisUpdateWordsLoading] = useState(true)
+  const { words, configTrain, orderTypeEstablished } = useAppSelector(selectConfigApp)
 
   const handleUpdateWords = async () => {
-    setisUpdateWordsLoading(true)
     try {
       await dispatch(getWords())
+      handleGroupWords(orderTypeEstablished)
     } catch (error) {
       showMsgError('error.firebaseError')
     }
@@ -34,6 +34,10 @@ export default function Index() {
   const handleChangeVAutomatic = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setChangeVelocityAutomatic(parseInt(e.target.value)))
   }
+
+  useEffect(() => {
+    handleUpdateWords()
+  }, [])
 
   return (
     <Layout>
@@ -74,18 +78,17 @@ export default function Index() {
                     <option value={3}>3+</option>
                     <option value={4}>4+</option>
                     <option value={5}>5+</option>
+                    <option value={6}>6+</option>
+                    <option value={7}>7+</option>
                   </Input>
                 </div>
               </Fade>
             )}
 
-            <Link className="w-250px mt-5 btn btn-primary btn-lg" to="training" color="primary">
+            <Link className="w-250px mt-5 mb-4 btn btn-primary btn-lg" to="training" color="primary">
               {trans('label.startTraining')}
             </Link>
-            <Button onClick={handleUpdateWords} className="w-250px mt-4 text-light" size="lg" color="info" disabled={isUpdateWordsLoading}>
-              {isUpdateWordsLoading ? <Loading size="22" /> : trans('label.updateWords')}
-            </Button>
-            {words && `${trans('label.totalWords')} ${words.length}`}
+            {isUpdateWordsLoading ? <Loading size="22" /> : `${trans('label.totalWords')} ${words.length}`}
           </div>
         </div>
       </div>

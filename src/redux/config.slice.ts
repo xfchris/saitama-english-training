@@ -19,7 +19,7 @@ const initialState: InitialStateType = {
     studyEnglishToSpanish: true,
     studyRandomMode: false,
     studyAutomatic: false,
-    velocityStudyAutomatic: 1
+    velocityStudyAutomatic: 3
   },
   lang: 'es',
   studiedHashWords: [],
@@ -79,7 +79,9 @@ const configApp = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(getWords.fulfilled, (state: InitialStateType, action: PayloadAction<Word[]>) => {
-      state.words = action.payload
+      if (action.payload.length) {
+        state.words = action.payload
+      }
     })
   }
 })

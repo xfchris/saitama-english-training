@@ -4,7 +4,7 @@ import { trans } from '../../config/i18n'
 import Layout from '../../layouts/Layout'
 import classNames from 'classnames'
 import { useAppSelector } from '../../hooks'
-import { selectConfigApp, setGroupHashWordsByNumberWords, setOrderTypeEstablished, setStudiedhashWords } from '../../redux/config.slice'
+import { selectConfigApp, setStudiedhashWords } from '../../redux/config.slice'
 import { useApp } from '../../providers/AppProvider'
 import { blockScreenSleep, HTMLReactRender, showMsgConfirm } from '../../utils/helpers'
 import { ChangeEvent } from 'react'
@@ -32,7 +32,7 @@ export default function StartIn() {
 }
 
 export function TrainingOptions() {
-  const { dispatch } = useApp()
+  const { dispatch, handleGroupWords } = useApp()
   const { orderTypeEstablished } = useAppSelector(selectConfigApp)
 
   const handleRemoveStudiedWords = () => {
@@ -44,10 +44,7 @@ export function TrainingOptions() {
   }
 
   const handleChangeGroupWords = (e: ChangeEvent<HTMLSelectElement>) => {
-    const value = parseInt(e.target.value)
-    dispatch(setOrderTypeEstablished(value))
-    const groupTypeNumberWords = [Infinity, 10, 20]
-    dispatch(setGroupHashWordsByNumberWords(groupTypeNumberWords[value]))
+    handleGroupWords(parseInt(e.target.value))
   }
 
   return (

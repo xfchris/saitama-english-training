@@ -7,7 +7,7 @@ import { Auth, UserCredential, User, signInWithEmailAndPassword, signOut as sign
 import { auth } from '../config/firebase'
 import Swal from 'sweetalert2'
 import { trans } from '../config/i18n'
-import { selectConfigApp, setStudyAutomatic } from '../redux/config.slice'
+import { selectConfigApp, setGroupHashWordsByNumberWords, setOrderTypeEstablished, setStudyAutomatic } from '../redux/config.slice'
 import { useSelector } from 'react-redux'
 
 interface IAppContext {
@@ -19,6 +19,7 @@ interface IAppContext {
   signOut: () => Promise<void>
   handleAutomaticStudy: () => void
   studyAutomatic: boolean
+  handleGroupWords: (value: number) => void
 }
 const AppContext = createContext<IAppContext | null>(null)
 
@@ -42,6 +43,12 @@ export function AppProvider({ children }: ChildrenProps) {
     dispatch(setStudyAutomatic(!studyAutomatic))
   }
 
+  const handleGroupWords = (value: number) => {
+    dispatch(setOrderTypeEstablished(value))
+    const groupTypeNumberWords = [Infinity, 10, 20]
+    dispatch(setGroupHashWordsByNumberWords(groupTypeNumberWords[value]))
+  }
+
   useEffect(() => {
     const unsubsrcibe = auth.onAuthStateChanged(user => {
       setUser(user)
@@ -57,6 +64,7 @@ export function AppProvider({ children }: ChildrenProps) {
     signOut,
     handleAutomaticStudy,
     studyAutomatic,
+    handleGroupWords,
     auth
   }
   return <AppContext.Provider value={providerValue}>{children}</AppContext.Provider>
