@@ -6,12 +6,16 @@ import classNames from 'classnames'
 import { useAppSelector } from '../../hooks'
 import { selectConfigApp, setStudiedhashWords } from '../../redux/config.slice'
 import { useApp } from '../../providers/AppProvider'
-import { blockScreenSleep, HTMLReactRender, showMsgConfirm } from '../../utils/helpers'
-import { ChangeEvent } from 'react'
+import { blockScreenSleep, HTMLReactRender, noSleep, showMsgConfirm } from '../../utils/helpers'
+import { ChangeEvent, useEffect } from 'react'
 import { GROUP_TYPES } from '../../config/constants'
 
 export default function StartIn() {
   const { groupHashWords } = useAppSelector(selectConfigApp)
+
+  useEffect(() => {
+    noSleep.disable()
+  }, [])
 
   return (
     <Layout with100={false}>

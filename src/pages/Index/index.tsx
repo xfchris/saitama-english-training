@@ -13,7 +13,7 @@ import {
   setStudyEnglishToSpanish,
   setStudyRandomMode
 } from '../../redux/config.slice'
-import { showMsgError } from '../../utils/helpers'
+import { noSleep, showMsgError } from '../../utils/helpers'
 import { useApp } from '../../providers/AppProvider'
 
 export default function Index() {
@@ -37,6 +37,7 @@ export default function Index() {
 
   useEffect(() => {
     handleUpdateWords()
+    noSleep.disable()
   }, [])
 
   return (
