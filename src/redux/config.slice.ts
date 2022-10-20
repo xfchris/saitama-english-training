@@ -24,7 +24,7 @@ const initialState: InitialStateType = {
   lang: 'es',
   studiedHashWords: [],
   groupHashWords: [],
-  orderTypeEstablished: 0
+  orderTypeEstablished: 1
 }
 
 const configApp = createSlice({
