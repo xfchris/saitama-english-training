@@ -19,7 +19,7 @@ import { useApp } from '../../providers/AppProvider'
 export default function Index() {
   const { dispatch, handleGroupWords } = useApp()
   const [isUpdateWordsLoading, setisUpdateWordsLoading] = useState(true)
-  const { words, configTrain, orderTypeEstablished } = useAppSelector(selectConfigApp)
+  const { words, configTrain, orderTypeEstablished, syncWords } = useAppSelector(selectConfigApp)
 
   const handleUpdateWords = async () => {
     try {
@@ -36,7 +36,9 @@ export default function Index() {
   }
 
   useEffect(() => {
-    handleUpdateWords()
+    if (!syncWords) {
+      handleUpdateWords()
+    }
     noSleep.disable()
   }, [])
 
@@ -89,7 +91,7 @@ export default function Index() {
             <Link className="w-250px mt-5 mb-4 btn btn-primary btn-lg" to="training" color="primary">
               {trans('label.startTraining')}
             </Link>
-            {isUpdateWordsLoading ? <Loading size="22" /> : `${trans('label.totalWords')} ${words.length}`}
+            {isUpdateWordsLoading && !syncWords ? <Loading size="22" /> : `${trans('label.totalWords')} ${words.length}`}
           </div>
         </div>
       </div>

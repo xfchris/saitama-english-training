@@ -5,11 +5,18 @@ import { PERSIST, persistReducer, persistStore } from 'redux-persist'
 
 const persistConfig = {
   key: 'root',
-  storage
+  storage,
+  blacklist: ['configApp']
+}
+
+const configAppPersistConfig = {
+  key: 'configApp',
+  storage,
+  blacklist: ['syncWords']
 }
 
 const rootReducer = combineReducers({
-  configApp
+  configApp: persistReducer(configAppPersistConfig, configApp)
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

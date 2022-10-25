@@ -11,6 +11,7 @@ type InitialStateType = {
   studiedHashWords: string[]
   groupHashWords: string[][]
   orderTypeEstablished: number
+  syncWords: boolean
 }
 
 const initialState: InitialStateType = {
@@ -24,7 +25,8 @@ const initialState: InitialStateType = {
   lang: 'es',
   studiedHashWords: [],
   groupHashWords: [],
-  orderTypeEstablished: 1
+  orderTypeEstablished: 1,
+  syncWords: false
 }
 
 const configApp = createSlice({
@@ -81,6 +83,7 @@ const configApp = createSlice({
     builder.addCase(getWords.fulfilled, (state: InitialStateType, action: PayloadAction<Word[]>) => {
       if (action.payload.length) {
         state.words = action.payload
+        state.syncWords = true
       }
     })
   }
