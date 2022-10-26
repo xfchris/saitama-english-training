@@ -40,7 +40,7 @@ export const talkText = (msg: string, volume = 1, lang?: string) => {
     speechSynthesis.cancel()
     const u = new SpeechSynthesisUtterance(msg)
     u.volume = volume
-    u.lang = lang ?? 'en-US'
+    u.lang = lang ?? 'en'
     u.rate = 1
     u.pitch = 1
     speechSynthesis.speak(u)
