@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { trans } from '../config/i18n'
 import AlertNoRecords from './AlertNoRecords'
 import DataTable, { TableStyles } from 'react-data-table-component'
@@ -13,7 +13,8 @@ import { useApp } from '../providers/AppProvider'
 
 export function WordsDataTable() {
   const { words } = useAppSelector(selectConfigApp)
-  const { navigate, dispatch } = useApp()
+  const navigate = useNavigate()
+  const { dispatch } = useApp()
 
   if (!words || !words.length) {
     return <AlertNoRecords title="label.noRecords" />

@@ -13,7 +13,6 @@ import { categories } from '../config/constants'
 import { getWords } from '../redux/actions'
 import Loading from './Loading'
 import { EraserFillIcon } from './Icons'
-import { useApp } from '../providers/AppProvider'
 import { useNavigate } from 'react-router-dom'
 
 const schemaValidation = yup

@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react'
-import { describe, it, vi } from 'vitest'
+import { describe, it } from 'vitest'
 import { trans } from '../../../config/i18n'
 import { memoryDBFirebase } from '../../mocks/FirestoreMemoryMock'
 import { ejecAllMocks, renderAppWithRoute } from '../../helpers'
