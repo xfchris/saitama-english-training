@@ -14,6 +14,7 @@ import { getWords } from '../redux/actions'
 import Loading from './Loading'
 import { EraserFillIcon } from './Icons'
 import { useApp } from '../providers/AppProvider'
+import { useNavigate } from 'react-router-dom'
 
 const schemaValidation = yup
   .object({
@@ -47,7 +48,7 @@ export default function FormWords({ idForUpdate }: FormWordsProps) {
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useAppDispatch()
   const { words } = useAppSelector(selectConfigApp)
-  const { navigate } = useApp()
+  const navigate = useNavigate()
 
   const onSubmit = async (word: Partial<Word>) => {
     try {

@@ -2,10 +2,16 @@ import { screen, waitFor } from '@testing-library/react'
 import { describe, it } from 'vitest'
 import { trans } from '../config/i18n'
 import './mocks/FirestoreMemoryMock'
-import { renderAppWithRoute } from './helpers'
+import { ejecAllMocks, renderAppWithRoute } from './helpers'
+import store from '../redux/store'
+import { getWords } from '../redux/actions'
+import { setGroupHashWordsByNumberWords } from '../redux/config.slice'
+ejecAllMocks()
 
 describe('App', () => {
   beforeEach(async () => {
+    await store.dispatch(getWords())
+    store.dispatch(setGroupHashWordsByNumberWords(10))
     renderAppWithRoute()
   })
 

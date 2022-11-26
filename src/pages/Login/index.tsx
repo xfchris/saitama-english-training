@@ -7,6 +7,7 @@ import * as yup from 'yup'
 import { useApp } from '../../providers/AppProvider'
 import { useState } from 'react'
 import Loading from '../../components/Loading'
+import { useNavigate } from 'react-router-dom'
 
 const schemaValidation = yup
   .object({
@@ -34,7 +35,9 @@ export default function Login() {
     defaultValues: defaultValuesLogin,
     resolver: yupResolver(schemaValidation)
   })
-  const { navigate, user, signIn, signOut } = useApp()
+  const navigate = useNavigate()
+
+  const { user, signIn, signOut } = useApp()
   const [isLoginLoading, setisLoginLoading] = useState(false)
 
   const onSubmit = async (data: SignInFormValuesType) => {

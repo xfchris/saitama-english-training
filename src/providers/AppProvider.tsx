@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { NavigateFunction, useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../hooks'
 import { AppDispatch } from '../redux/store'
 import { ChildrenProps } from '../types/config'
@@ -7,13 +6,12 @@ import { Auth, UserCredential, User, signInWithEmailAndPassword, signOut as sign
 import { auth } from '../config/firebase'
 import Swal from 'sweetalert2'
 import { trans } from '../config/i18n'
-import { selectConfigApp, setGroupHashWordsByNumberWords, setOrderTypeEstablished, setStudyAutomatic } from '../redux/config.slice'
+import { selectConfigApp, setConfigTrain, setGroupHashWordsByNumberWords, setOrderTypeEstablished } from '../redux/config.slice'
 import { useSelector } from 'react-redux'
 
 interface IAppContext {
   user: User | null | undefined
   auth: Auth
-  navigate: NavigateFunction
   dispatch: AppDispatch
   signIn: (email: string, password: string) => Promise<UserCredential | void>
   signOut: () => Promise<void>
@@ -25,7 +23,6 @@ const AppContext = createContext<IAppContext | null>(null)
 
 export function AppProvider({ children }: ChildrenProps) {
   const [user, setUser] = useState<User | null | undefined>(undefined)
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { studyAutomatic } = useSelector(selectConfigApp).configTrain
 
@@ -40,7 +37,7 @@ export function AppProvider({ children }: ChildrenProps) {
   }
 
   const handleAutomaticStudy = () => {
-    dispatch(setStudyAutomatic(!studyAutomatic))
+    dispatch(setConfigTrain({ studyAutomatic: !studyAutomatic }))
   }
 
   const handleGroupWords = (value: number) => {
@@ -58,7 +55,6 @@ export function AppProvider({ children }: ChildrenProps) {
 
   const providerValue = {
     user,
-    navigate,
     dispatch,
     signIn,
     signOut,

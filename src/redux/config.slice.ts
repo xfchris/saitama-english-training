@@ -36,23 +36,6 @@ const configApp = createSlice({
     setLang: (state: InitialStateType, action: PayloadAction<LangType>) => {
       state.lang = action.payload
     },
-    setStudyEnglishToSpanish: (state: InitialStateType, action: PayloadAction<boolean>) => {
-      state.configTrain.studyEnglishToSpanish = action.payload
-    },
-    setStudyAutomatic: (state: InitialStateType, action: PayloadAction<boolean>) => {
-      state.configTrain.studyAutomatic = action.payload
-    },
-    setStudyRandomMode: (state: InitialStateType, action: PayloadAction<boolean>) => {
-      state.configTrain.studyRandomMode = action.payload
-    },
-    addStudiedWord: (state: InitialStateType, action: PayloadAction<string>) => {
-      if (!state.studiedHashWords.includes(action.payload)) {
-        state.studiedHashWords.push(action.payload)
-      }
-    },
-    setChangeVelocityAutomatic: (state: InitialStateType, action: PayloadAction<number>) => {
-      state.configTrain.velocityStudyAutomatic = action.payload
-    },
     setOrderTypeEstablished: (state: InitialStateType, action: PayloadAction<number>) => {
       state.orderTypeEstablished = action.payload
     },
@@ -61,6 +44,14 @@ const configApp = createSlice({
     },
     setGroupHashWords: (state: InitialStateType, action: PayloadAction<string[][]>) => {
       state.groupHashWords = action.payload
+    },
+    setConfigTrain: (state: InitialStateType, action: PayloadAction<Partial<ConfigTrainType>>) => {
+      state.configTrain = { ...state.configTrain, ...action.payload }
+    },
+    addStudiedWord: (state: InitialStateType, action: PayloadAction<string>) => {
+      if (!state.studiedHashWords.includes(action.payload)) {
+        state.studiedHashWords.push(action.payload)
+      }
     },
     setGroupHashWordsByNumberWords: (state: InitialStateType, action: PayloadAction<number>) => {
       let groupIndex = -1
@@ -75,9 +66,7 @@ const configApp = createSlice({
         return out
       }, [])
     },
-    resetConfigApp: () => {
-      return initialState
-    }
+    resetConfigApp: () => initialState
   },
   extraReducers: builder => {
     builder.addCase(getWords.fulfilled, (state: InitialStateType, action: PayloadAction<Word[]>) => {
@@ -91,10 +80,7 @@ const configApp = createSlice({
 
 export const {
   setLang,
-  setStudyEnglishToSpanish,
-  setChangeVelocityAutomatic,
-  setStudyAutomatic,
-  setStudyRandomMode,
+  setConfigTrain,
   addStudiedWord,
   setStudiedhashWords,
   resetConfigApp,

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Badge, Button, Fade, Progress } from 'reactstrap'
 import { useInterval } from 'usehooks-ts'
 import { MAX_PROGRESS_PERCENT } from '../../config/constants'
@@ -19,7 +19,8 @@ export default function Training() {
     groupHashWords,
     orderTypeEstablished
   } = useAppSelector(selectConfigApp)
-  const { navigate, dispatch, handleAutomaticStudy, studyAutomatic, user } = useApp()
+  const navigate = useNavigate()
+  const { dispatch, handleAutomaticStudy, studyAutomatic, user } = useApp()
   const [showResult, setShowResult] = useState(false)
   const [runAutomaticTime, setRunAutomaticTime] = useState(false)
   const [percentAutomaticBar, setPercentAutomaticBar] = useState(MAX_PROGRESS_PERCENT)

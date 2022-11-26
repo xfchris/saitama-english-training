@@ -30,10 +30,13 @@ export async function XMLHttpRequestMock() {
 }
 
 export function windowMock() {
-  global.window.scrollTo = jest.fn()
+  window.HTMLMediaElement.prototype.load = vi.fn()
+  window.HTMLMediaElement.prototype.play = vi.fn()
+  window.HTMLMediaElement.prototype.pause = vi.fn()
+  window.HTMLMediaElement.prototype.addTextTrack = vi.fn()
   Object.defineProperty(window, 'location', {
     writable: true,
-    value: { reload: jest.fn() }
+    value: { reload: vi.fn() }
   })
 }
 

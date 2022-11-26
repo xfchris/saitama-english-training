@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import SpinnerLogo from './components/SpinnerLogo'
 import { talkText } from './utils/helpers'
 import { useEffect } from 'react'
+import { AppProvider } from './providers/AppProvider'
 
 function App({ location }: AppProps) {
   const { ready } = useTranslation()
@@ -24,7 +25,9 @@ function App({ location }: AppProps) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Routing location={location} />
+        <AppProvider>
+          <Routing location={location} />
+        </AppProvider>
       </PersistGate>
     </Provider>
   )

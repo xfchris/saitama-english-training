@@ -9,9 +9,12 @@ import { useApp } from '../../providers/AppProvider'
 import { blockScreenSleep, HTMLReactRender, noSleep, showMsgConfirm } from '../../utils/helpers'
 import { ChangeEvent, useEffect } from 'react'
 import { GROUP_TYPES } from '../../config/constants'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export default function StartIn() {
   const { groupHashWords } = useAppSelector(selectConfigApp)
+  useTranslation()
 
   useEffect(() => {
     noSleep.disable()
@@ -21,6 +24,7 @@ export default function StartIn() {
     <Layout with100={false}>
       <Container>
         <TitleH1 title={trans('label.selectStartWord')} />
+
         <div className="d-flex justify-content-center mb-3">
           <TrainingOptions />
         </div>
@@ -89,7 +93,7 @@ function AllWordsTable({ hashWords, groupIndex }: AllWordsTableType) {
     studiedHashWords,
     configTrain: { studyEnglishToSpanish }
   } = useAppSelector(selectConfigApp)
-  const { navigate } = useApp()
+  const navigate = useNavigate()
 
   return (
     <Table className="mb-4 border rounded" bordered hover responsive>

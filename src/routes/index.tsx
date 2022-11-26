@@ -4,7 +4,6 @@ import Index from '../pages/Index'
 import StartIn from '../pages/Training'
 import Login from '../pages/Login'
 import Training from '../pages/Training/Training'
-import { AppProvider } from '../providers/AppProvider'
 import { RoutingProps } from '../types/config'
 
 const routes = [
@@ -39,7 +38,7 @@ export default function Routing({ location }: RoutingProps) {
     <BrowserRouter>
       <Routes location={location}>
         {routes.map(({ path, element }, i) => (
-          <Route key={i} path={path} element={<AppProvider>{element}</AppProvider>} />
+          <Route key={i} path={path} element={element} />
         ))}
       </Routes>
     </BrowserRouter>

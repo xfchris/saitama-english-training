@@ -6,13 +6,7 @@ import Layout from '../../layouts/Layout'
 import { trans } from '../../config/i18n'
 import { useAppSelector } from '../../hooks'
 import { getWords } from '../../redux/actions'
-import {
-  selectConfigApp,
-  setChangeVelocityAutomatic,
-  setStudyAutomatic,
-  setStudyEnglishToSpanish,
-  setStudyRandomMode
-} from '../../redux/config.slice'
+import { selectConfigApp, setConfigTrain } from '../../redux/config.slice'
 import { noSleep, showMsgError } from '../../utils/helpers'
 import { useApp } from '../../providers/AppProvider'
 
@@ -32,7 +26,7 @@ export default function Index() {
   }
 
   const handleChangeVAutomatic = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setChangeVelocityAutomatic(parseInt(e.target.value)))
+    dispatch(setConfigTrain({ velocityStudyAutomatic: parseInt(e.target.value) }))
   }
 
   useEffect(() => {
@@ -52,15 +46,19 @@ export default function Index() {
             <img className="my-2" src="/icon.png" />
           </div>
           <div className="d-flex flex-column align-items-center">
-            <FormGroup className="mt-2" switch onClick={() => dispatch(setStudyEnglishToSpanish(!configTrain.studyEnglishToSpanish))}>
+            <FormGroup
+              className="mt-2"
+              switch
+              onClick={() => dispatch(setConfigTrain({ studyEnglishToSpanish: !configTrain.studyEnglishToSpanish }))}
+            >
               <Input type="switch" checked={configTrain.studyEnglishToSpanish} readOnly />
               <Label check>{trans('label.learnEnglishToSpanish')}</Label>
             </FormGroup>
-            <FormGroup className="mt-2" switch onClick={() => dispatch(setStudyRandomMode(!configTrain.studyRandomMode))}>
+            <FormGroup className="mt-2" switch onClick={() => dispatch(setConfigTrain({ studyRandomMode: !configTrain.studyRandomMode }))}>
               <Input type="switch" checked={configTrain.studyRandomMode} readOnly />
               <Label check>{trans('label.randomMode')}</Label>
             </FormGroup>
-            <FormGroup className="mt-2" switch onClick={() => dispatch(setStudyAutomatic(!configTrain.studyAutomatic))}>
+            <FormGroup className="mt-2" switch onClick={() => dispatch(setConfigTrain({ studyAutomatic: !configTrain.studyAutomatic }))}>
               <Input type="switch" checked={configTrain.studyAutomatic} readOnly />
               <Label check>{trans('label.automaticLearn')}</Label>
             </FormGroup>

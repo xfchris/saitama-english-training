@@ -1,16 +1,17 @@
 import { screen } from '@testing-library/react'
-import { describe, it } from 'vitest'
+import { describe, it, vi } from 'vitest'
 import { trans } from '../../../config/i18n'
 import { memoryDBFirebase } from '../../mocks/FirestoreMemoryMock'
-import { renderAppWithRoute } from '../../helpers'
+import { ejecAllMocks, renderAppWithRoute } from '../../helpers'
 import store from '../../../redux/store'
 import { getWords } from '../../../redux/actions'
 import { setGroupHashWordsByNumberWords } from '../../../redux/config.slice'
+ejecAllMocks()
 
 describe('Training', () => {
   beforeAll(async () => {
     await store.dispatch(getWords())
-    await store.dispatch(setGroupHashWordsByNumberWords(10))
+    store.dispatch(setGroupHashWordsByNumberWords(10))
   })
 
   it('should render training page', () => {
