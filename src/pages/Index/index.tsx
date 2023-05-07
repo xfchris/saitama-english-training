@@ -12,11 +12,12 @@ import { useApp } from '../../providers/AppProvider'
 
 export default function Index() {
   const { dispatch, handleGroupWords } = useApp()
-  const [isUpdateWordsLoading, setisUpdateWordsLoading] = useState(true)
-  const { words, configTrain, orderTypeEstablished, syncWords } = useAppSelector(selectConfigApp)
+  const [isUpdateWordsLoading, setisUpdateWordsLoading] = useState(false)
+  const { words, configTrain, orderTypeEstablished, canSyncWords } = useAppSelector(selectConfigApp)
 
   const handleUpdateWords = async () => {
     try {
+      setisUpdateWordsLoading(true)
       await dispatch(getWords())
       handleGroupWords(orderTypeEstablished)
     } catch (error) {
@@ -30,7 +31,7 @@ export default function Index() {
   }
 
   useEffect(() => {
-    if (!syncWords) {
+    if (canSyncWords) {
       handleUpdateWords()
     }
     noSleep.disable()
@@ -89,7 +90,7 @@ export default function Index() {
             <Link className="w-250px mt-5 mb-4 btn btn-primary btn-lg" to="training" color="primary">
               {trans('label.startTraining')}
             </Link>
-            {isUpdateWordsLoading && !syncWords ? <Loading size="22" /> : `${trans('label.totalWords')} ${words.length}`}
+            {isUpdateWordsLoading ? <Loading size="22" /> : `${trans('label.totalWords')} ${words.length}`}
           </div>
         </div>
       </div>

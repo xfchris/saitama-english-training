@@ -12,7 +12,7 @@ const persistConfig = {
 const configAppPersistConfig = {
   key: 'configApp',
   storage,
-  blacklist: ['syncWords']
+  blacklist: ['canSyncWords']
 }
 
 const rootReducer = combineReducers({
